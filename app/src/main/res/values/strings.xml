@@ -2,5 +2,21 @@
     <string name="app_name">Buddy</string>
 
     <string name="hello_world">Hello world!</string>
+
     <string name="action_settings">Settings</string>
+
+    <string name="title_add_post">Add Post</string>
+
+    <string name="label_account">Account</string>
+    <string name="label_profile">Profile</string>
+    <string name="label_setting">Setting</string>
+
+    <string name="tab_news">News Feed</string>
+    <string name="tab_attention">Attention</string>
+    <string name="tab_mood">Mood</string>
+    <string name="tab_more">More</string>
+
+    <string name="key_preference">preference</string>
+    <string name="key_username">username</string>
+    <string name="key_password">password</string>
 </resources>
