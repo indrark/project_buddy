@@ -89,7 +89,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
 
     private void gotoLoginScreen() {
         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-        //startActivity(intent);
+        startActivity(intent);
     }
 
     @Override
