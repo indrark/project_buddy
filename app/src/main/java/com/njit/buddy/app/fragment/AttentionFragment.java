@@ -14,7 +14,7 @@ public class AttentionFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View news_layout = inflater.inflate(R.layout.attention_layout, container, false);
+        View news_layout = inflater.inflate(R.layout.fragment_attention, container, false);
         return news_layout;
     }
 

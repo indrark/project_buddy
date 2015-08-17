@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/imageView2"
                     android:layout_gravity="center"
-                    android:src="@drawable/right_arrow"/>
+                    android:src="@drawable/arrow_right"/>
         </FrameLayout>
 
     </LinearLayout>
@@ -80,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView"
-                android:src="@drawable/right_arrow"
+                android:src="@drawable/arrow_right"
                 android:paddingRight="@dimen/widget_margin"/>
     </LinearLayout>
 
@@ -111,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView3"
-                android:src="@drawable/right_arrow"
+                android:src="@drawable/arrow_right"
                 android:paddingRight="@dimen/widget_margin"/>
     </LinearLayout>
 </RelativeLayout>

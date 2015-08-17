@@ -14,7 +14,7 @@ public class MoodFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View news_layout = inflater.inflate(R.layout.mood_layout, container, false);
+        View news_layout = inflater.inflate(R.layout.fragment_mood, container, false);
         return news_layout;
     }
 

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 import com.njit.buddy.app.fragment.AttentionFragment;
@@ -23,7 +22,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     private final int TAB_MOOD = 0x003;
     private final int TAB_MORE = 0x004;
 
-    private Menu menu;
+    private int current_tab;
 
     private NewsFragment news_fragment;
     private AttentionFragment attention_fragment;
@@ -43,31 +42,39 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
         Connector.initialize();
         initComponents();
 
-        if (savedInstanceState == null) {
+        SharedPreferences preferences =
+                getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
+        String username = preferences.getString(getResources().getString(R.string.key_username), null);
+        String password = preferences.getString(getResources().getString(R.string.key_password), null);
+        if(username == null || password == null) {
             gotoLoginScreen();
-        } else {
-            String username = savedInstanceState.getString(getResources().getString(R.string.key_username));
-            String password = savedInstanceState.getString(getResources().getString(R.string.key_password));
-            if (username == null || password == null) {
-                gotoLoginScreen();
-            } else {
-                //store login information
-                SharedPreferences preferences =
-                        getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString(getResources().getString(R.string.key_username), username);
-                editor.putString(getResources().getString(R.string.key_password), password);
-                editor.commit();
-            }
         }
 
         setTabSelection(TAB_NEWS);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences preferences =
+                getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(getResources().getString(R.string.key_tab), current_tab);
+        editor.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences preferences =
+                getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
+        setTabSelection(preferences.getInt(getResources().getString(R.string.key_tab), TAB_NEWS));
+    }
+
     @SuppressWarnings("ResourceType")
     private void initComponents() {
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.abs_buddy_activity);
+        getSupportActionBar().setCustomView(R.layout.abs_buddy);
 
         //initialize bottom tabs
         tab_news_layout = findViewById(R.id.tab_news_layout);
@@ -82,7 +89,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
 
     private void gotoLoginScreen() {
         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-        startActivity(intent);
+        //startActivity(intent);
     }
 
     @Override
@@ -121,6 +128,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
                     transaction.show(news_fragment);
                 }
                 updateActionBar(getResources().getString(R.string.tab_news), true);
+                current_tab = TAB_NEWS;
                 break;
             case TAB_ATTENTION:
                 //change the attention tab background to checked
@@ -133,6 +141,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
                     transaction.show(attention_fragment);
                 }
                 updateActionBar(getResources().getString(R.string.tab_attention), false);
+                current_tab = TAB_ATTENTION;
                 break;
             case TAB_MOOD:
                 //change the mood tab background to checked
@@ -145,6 +154,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
                     transaction.show(mood_fragment);
                 }
                 updateActionBar(getResources().getString(R.string.tab_mood), false);
+                current_tab = TAB_MOOD;
                 break;
             case TAB_MORE:
                 //change the more tab background to checked
@@ -157,6 +167,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
                     transaction.show(more_fragment);
                 }
                 updateActionBar(getResources().getString(R.string.tab_more), false);
+                current_tab = TAB_MORE;
                 break;
         }
         transaction.commit();
@@ -176,7 +187,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
         if (attention_fragment != null) {
             transaction.hide(attention_fragment);
         }
-        if(mood_fragment != null) {
+        if (mood_fragment != null) {
             transaction.hide(mood_fragment);
         }
         if (more_fragment != null) {
@@ -186,7 +197,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
 
     private void updateActionBar(String title, boolean show_add_btn) {
         ((TextView) findViewById(R.id.abs_title)).setText(title);
-        if(show_add_btn) {
+        if (show_add_btn) {
             findViewById(R.id.btn_add_post).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.btn_add_post).setVisibility(View.INVISIBLE);
