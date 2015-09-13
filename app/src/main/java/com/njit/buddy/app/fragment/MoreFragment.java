@@ -70,6 +70,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
                 case MotionEvent.ACTION_UP:
                     v.setBackgroundResource(R.drawable.border_unchecked);
                     break;
+                case MotionEvent.ACTION_MOVE:
+                    v.setBackgroundResource(R.drawable.border_unchecked);
+                    break;
             }
             return false;
         }

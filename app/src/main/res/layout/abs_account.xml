@@ -33,7 +33,8 @@
                 android:text="@string/label_back"
                 android:id="@+id/tv_account_back"
                 android:layout_gravity="center_vertical"
-                android:paddingLeft="@dimen/icon_margin"/>
+                android:paddingLeft="@dimen/icon_margin"
+                />
     </LinearLayout>
 
 </FrameLayout>

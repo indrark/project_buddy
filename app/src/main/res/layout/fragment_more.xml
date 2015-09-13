@@ -1,117 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="@dimen/widget_margin"
-                android:background="#FFEFEFEF">
+                android:layout_height="match_parent">
 
-    <LinearLayout
-            android:orientation="horizontal"
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="96dp"
-            android:background="@drawable/border_unchecked"
-            android:paddingLeft="@dimen/widget_margin"
-            android:paddingTop="@dimen/widget_margin"
-            android:paddingBottom="@dimen/widget_margin"
-            android:id="@+id/btn_account"
-            android:baselineAligned="false">
+            android:layout_height="match_parent"
+            android:id="@+id/sv_more"
+            android:fillViewport="false">
 
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/widget_margin"
+                android:background="#FFEFEFEF"
+                android:paddingBottom="@dimen/widget_margin">
 
-            <ImageView
-                    android:layout_width="66dp"
-                    android:layout_height="66dp"
-                    android:id="@+id/iv_account"
-                    android:src="@drawable/avatar_default"
-                    />
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/label_account"
-                    android:id="@+id/tv_account"
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:background="@drawable/border_unchecked"
                     android:paddingLeft="@dimen/widget_margin"
-                    android:gravity="center"/>
+                    android:paddingTop="@dimen/widget_margin"
+                    android:paddingBottom="@dimen/widget_margin"
+                    android:id="@+id/btn_account"
+                    android:baselineAligned="false">
 
-        </LinearLayout>
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
 
-        <FrameLayout
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
-                >
+                    <ImageView
+                            android:layout_width="66dp"
+                            android:layout_height="66dp"
+                            android:id="@+id/iv_account"
+                            android:src="@drawable/avatar_default"
+                            />
 
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageView2"
-                    android:layout_gravity="center"
-                    android:src="@drawable/arrow_right"/>
-        </FrameLayout>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="@string/label_account"
+                            android:id="@+id/tv_account"
+                            android:paddingLeft="@dimen/widget_margin"
+                            android:gravity="center"/>
 
-    </LinearLayout>
+                </LinearLayout>
 
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="@dimen/widget_margin"
-            android:layout_below="@+id/btn_account"
-            android:background="@drawable/border_unchecked"
-            android:paddingLeft="@dimen/icon_margin"
-            android:paddingTop="@dimen/icon_margin"
-            android:paddingBottom="@dimen/icon_margin"
-            android:gravity="center_vertical"
-            android:id="@+id/btn_profile">
+                <FrameLayout
+                        android:layout_width="48dp"
+                        android:layout_height="match_parent"
+                        >
 
-        <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/label_profile"
-                android:id="@+id/tv_profile"/>
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/imageView2"
+                            android:layout_gravity="center"
+                            android:src="@drawable/arrow_right"/>
+                </FrameLayout>
 
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView"
-                android:src="@drawable/arrow_right"
-                android:paddingRight="@dimen/widget_margin"/>
-    </LinearLayout>
+            </LinearLayout>
 
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/border_unchecked"
-            android:layout_below="@+id/btn_profile"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="@dimen/icon_margin"
-            android:paddingLeft="@dimen/icon_margin"
-            android:paddingTop="@dimen/icon_margin"
-            android:paddingBottom="@dimen/icon_margin"
-            android:gravity="center_vertical"
-            android:id="@+id/btn_setting">
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="@dimen/widget_margin"
+                    android:layout_below="@+id/btn_account"
+                    android:background="@drawable/border_unchecked"
+                    android:paddingLeft="@dimen/icon_margin"
+                    android:paddingTop="@dimen/icon_margin"
+                    android:paddingBottom="@dimen/icon_margin"
+                    android:gravity="center_vertical"
+                    android:id="@+id/btn_profile">
 
-        <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/label_setting"
-                android:id="@+id/tv_setting"/>
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/label_profile"
+                        android:id="@+id/tv_profile"/>
 
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView3"
-                android:src="@drawable/arrow_right"
-                android:paddingRight="@dimen/widget_margin"/>
-    </LinearLayout>
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView"
+                        android:src="@drawable/arrow_right"
+                        android:paddingRight="@dimen/widget_margin"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/border_unchecked"
+                    android:layout_below="@+id/btn_profile"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="@dimen/icon_margin"
+                    android:paddingLeft="@dimen/icon_margin"
+                    android:paddingTop="@dimen/icon_margin"
+                    android:paddingBottom="@dimen/icon_margin"
+                    android:gravity="center_vertical"
+                    android:id="@+id/btn_setting">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/label_setting"
+                        android:id="@+id/tv_setting"/>
+
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView3"
+                        android:src="@drawable/arrow_right"
+                        android:paddingRight="@dimen/widget_margin"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
 </RelativeLayout>

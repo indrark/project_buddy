@@ -42,11 +42,10 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
         Connector.initialize();
         initComponents();
 
-        SharedPreferences preferences =
-                getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
         String username = preferences.getString(getResources().getString(R.string.key_username), null);
         String password = preferences.getString(getResources().getString(R.string.key_password), null);
-        if(username == null || password == null) {
+        if (username == null || password == null) {
             gotoLoginScreen();
         }
 
@@ -56,25 +55,25 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onPause() {
         super.onPause();
-        SharedPreferences preferences =
-                getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(getResources().getString(R.string.key_tab), current_tab);
-        editor.commit();
+        editor.apply();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences preferences =
-                getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
         setTabSelection(preferences.getInt(getResources().getString(R.string.key_tab), TAB_NEWS));
     }
 
     @SuppressWarnings("ResourceType")
     private void initComponents() {
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.abs_buddy);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar().setCustomView(R.layout.abs_buddy);
+        }
 
         //initialize bottom tabs
         tab_news_layout = findViewById(R.id.tab_news_layout);
