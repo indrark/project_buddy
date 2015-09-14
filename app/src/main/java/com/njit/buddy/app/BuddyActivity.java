@@ -1,13 +1,16 @@
 package com.njit.buddy.app;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import com.njit.buddy.app.fragment.AttentionFragment;
 import com.njit.buddy.app.fragment.MoodFragment;
@@ -34,6 +37,10 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     private View tab_mood_layout;
     private View tab_more_layout;
 
+    private AlertDialog category_list;
+    private AlertDialog post_dialog;
+    private EditText content_input;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +48,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
 
         Connector.initialize();
         initComponents();
+        createDialogs();
 
         SharedPreferences preferences = getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
         String username = preferences.getString(getResources().getString(R.string.key_username), null);
@@ -50,6 +58,37 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
         }
 
         setTabSelection(TAB_NEWS);
+    }
+
+    private void createDialogs() {
+        //create category list
+        AlertDialog.Builder category_builder = new AlertDialog.Builder(this);
+        category_builder.setTitle(R.string.msg_category)
+                .setItems(R.array.category, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showPostDialog(which);
+                    }
+                });
+        category_list = category_builder.create();
+        //create post dialog
+        AlertDialog.Builder post_builder = new AlertDialog.Builder(this);
+        post_builder.setTitle(R.string.msg_say_something);
+        content_input = new EditText(this);
+        post_builder.setView(content_input);
+        post_builder.setPositiveButton(getResources().getString(R.string.label_post), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tryPost();
+            }
+        });
+        post_builder.setNegativeButton(getResources().getString(R.string.label_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        post_dialog = post_builder.create();
     }
 
     @Override
@@ -84,6 +123,9 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
         tab_attention_layout.setOnClickListener(this);
         tab_mood_layout.setOnClickListener(this);
         tab_more_layout.setOnClickListener(this);
+
+        View btn_create_post = findViewById(R.id.btn_create_post);
+        btn_create_post.setOnClickListener(this);
     }
 
     private void gotoLoginScreen() {
@@ -105,6 +147,9 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.tab_more_layout:
                 setTabSelection(TAB_MORE);
+                break;
+            case R.id.btn_create_post:
+                category_list.show();
                 break;
         }
     }
@@ -197,10 +242,23 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     private void updateActionBar(String title, boolean show_add_btn) {
         ((TextView) findViewById(R.id.abs_title)).setText(title);
         if (show_add_btn) {
-            findViewById(R.id.btn_add_post).setVisibility(View.VISIBLE);
+            findViewById(R.id.btn_create_post).setVisibility(View.VISIBLE);
         } else {
-            findViewById(R.id.btn_add_post).setVisibility(View.INVISIBLE);
+            findViewById(R.id.btn_create_post).setVisibility(View.INVISIBLE);
         }
+    }
+
+    private void showPostDialog(int selected_category) {
+        //record selected category
+        content_input.setText("");
+        category_list.dismiss();
+        post_dialog.show();
+    }
+
+    private void tryPost() {
+        String content = content_input.getText().toString();
+        post_dialog.dismiss();
+        //send the post
     }
 
 }

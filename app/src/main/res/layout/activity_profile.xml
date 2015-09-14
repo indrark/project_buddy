@@ -1,27 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+        >
 
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical" >
 
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_notice" />
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/sv_profile"
+            android:fillViewport="false">
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:padding="10dp"
-                android:text="This is Profile View"
-                android:textSize="20sp" />
-    </LinearLayout>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/widget_margin"
+                    android:background="@drawable/border_unchecked"
+                    android:padding="@dimen/icon_margin">
+
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="144dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/iv_avatar"
+                            android:src="@drawable/avatar_default"/>
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="username"
+                            android:id="@+id/tv_username"/>
+
+                </LinearLayout>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Here displays the introduction"
+                        android:id="@+id/tv_introduction"
+                        android:layout_gravity="center_vertical"
+                        />
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/border_unchecked"
+                    android:id="@+id/btn_birthday"
+                    android:padding="@dimen/icon_margin"
+                    android:layout_marginTop="@dimen/widget_margin">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/label_birthday"
+                        android:id="@+id/tv_birthday"
+                        android:layout_weight="1"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="01/01/1960"
+                        android:id="@+id/tv_birthday_value"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/border_unchecked"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/icon_margin"
+                    android:id="@+id/btn_sex"
+                    android:padding="@dimen/icon_margin">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/label_sex"
+                        android:id="@+id/tv_sex"
+                        android:layout_weight="1"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/label_undefined"
+                        android:id="@+id/tv_sex_value"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/border_unchecked"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/icon_margin"
+                    android:id="@+id/btn_sexuality"
+                    android:padding="@dimen/icon_margin">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/label_sexuality"
+                        android:id="@+id/tx_sexuality"
+                        android:layout_weight="1"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/label_undefined"
+                        android:id="@+id/tv_sexuality_value"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="48dp"
+                    android:background="@drawable/border_unchecked"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/icon_margin"
+                    android:id="@+id/btn_race"
+                    android:padding="@dimen/icon_margin">
+
+                <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/label_race"
+                        android:id="@+id/tv_race"
+                        android:layout_weight="1"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/label_undefined"
+                        android:id="@+id/tv_rave_value"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/label_back"
+                android:text="@string/label_done"
                 android:id="@+id/tv_profile_edit_back"
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="@dimen/icon_margin"/>

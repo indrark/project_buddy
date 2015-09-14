@@ -16,6 +16,20 @@
     <string name="label_setting">Setting</string>
     <string name="label_back">Back</string>
     <string name="label_edit">Edit</string>
+    <string name="label_change_password">Change Password</string>
+    <string name="label_logout">Logout</string>
+    <string name="label_done">Done</string>
+    <string name="label_post">Post</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_birthday">Birthday</string>
+    <string name="label_sex">Sex</string>
+    <string name="label_sexuality">Sexuality</string>
+    <string name="label_race">Race</string>
+    <string name="label_undefined">Undefined</string>
+    <string name="label_set">Set</string>
+
+    <string name="msg_category">Pick a category</string>
+    <string name="msg_say_something">Say something…</string>
 
     <string name="tab_news">News Feed</string>
     <string name="tab_attention">Attention</string>
@@ -26,4 +40,5 @@
     <string name="key_username">username</string>
     <string name="key_password">password</string>
     <string name="key_tab">tab</string>
+
 </resources>

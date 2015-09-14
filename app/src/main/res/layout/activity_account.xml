@@ -1,27 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:padding="@dimen/widget_margin">
 
-    <LinearLayout
+
+    <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical" >
+            android:id="@+id/iv_avatar"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/avatar_default"
+            android:padding="@dimen/icon_margin"
+            android:layout_gravity="center_horizontal"/>
 
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_notice" />
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Here displays the username"
+            android:id="@+id/tv_username"
+            android:layout_gravity="center_horizontal"/>
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:padding="10dp"
-                android:text="This is Account View"
-                android:textSize="20sp" />
-    </LinearLayout>
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_change_password"
+            android:id="@+id/button"
+            android:layout_gravity="center_horizontal"
+            android:padding="@dimen/widget_margin"/>
 
-</RelativeLayout>
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_logout"
+            android:id="@+id/button2"
+            android:layout_gravity="center_horizontal"
+            android:padding="@dimen/widget_margin"/>
+</LinearLayout>
