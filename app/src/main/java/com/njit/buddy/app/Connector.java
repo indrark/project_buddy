@@ -3,10 +3,7 @@ package com.njit.buddy.app;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.net.CookieManager;
 import java.net.HttpCookie;
 import java.net.HttpURLConnection;
@@ -14,7 +11,7 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * Created by toyknight on 8/14/2015.
+ * @author toyknight 8/14/2015.
  */
 public class Connector {
 
@@ -43,7 +40,7 @@ public class Connector {
         int response = connection.getResponseCode();
         Log.d(DEBUG_TAG, "The response code for [GET] '" + url + "' is " + response);
 
-        String content = getContent(connection.getInputStream(), connection.getContentLength());
+        String content = getContent(connection.getInputStream());
         updateCookieStore(connection);
         connection.disconnect();
         return content;
@@ -60,18 +57,22 @@ public class Connector {
         int response = connection.getResponseCode();
         Log.d(DEBUG_TAG, "The response code for [POST] '" + url + "' is " + response);
 
-        String content = getContent(connection.getInputStream(), connection.getContentLength());
+        String content = getContent(connection.getInputStream());
         updateCookieStore(connection);
         connection.disconnect();
         return content;
     }
 
-    private static String getContent(InputStream is, int length) throws IOException {
-        Reader reader = new InputStreamReader(is, "UTF-8");
-        char[] buffer = new char[length];
-        reader.read(buffer);
-        is.close();
-        return new String(buffer);
+    private static String getContent(InputStream is) throws IOException {
+        InputStreamReader ir = new InputStreamReader(is, "UTF-8");
+        BufferedReader br = new BufferedReader(ir);
+        String line;
+        StringBuilder content = new StringBuilder();
+        while ((line = br.readLine()) != null) {
+            content.append(line).append("\n");
+        }
+        br.close();
+        return content.toString();
     }
 
     private static void updateCookieStore(HttpURLConnection connection) {
