@@ -1,5 +1,6 @@
 package com.njit.buddy.app;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -29,6 +30,13 @@ public class Connector {
         Connector.cookie_manager = new CookieManager();
     }
 
+    /**
+     * Send a GET request.
+     *
+     * @param url the request url
+     * @return the response content
+     * @throws IOException
+     */
     public static String executeGet(String url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setConnectTimeout(15000);
@@ -46,6 +54,13 @@ public class Connector {
         return content;
     }
 
+    /**
+     * Send a POST request.
+     *
+     * @param url the request url
+     * @return the response content
+     * @throws IOException
+     */
     public static String executePost(String url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setConnectTimeout(15000);
