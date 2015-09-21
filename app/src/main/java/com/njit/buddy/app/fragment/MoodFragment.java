@@ -8,14 +8,13 @@ import android.view.ViewGroup;
 import com.njit.buddy.app.R;
 
 /**
- * Created by toyknight on 8/15/2015.
+ * @author toyknight 8/15/2015.
  */
 public class MoodFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View news_layout = inflater.inflate(R.layout.fragment_mood, container, false);
-        return news_layout;
+        return inflater.inflate(R.layout.fragment_mood, container, false);
     }
 
 }

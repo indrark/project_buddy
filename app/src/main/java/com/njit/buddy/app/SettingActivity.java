@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 /**
- * Created by toyknight on 8/16/2015.
+ * @author toyknight 8/16/2015.
  */
 public class SettingActivity extends AppCompatActivity {
 
@@ -21,10 +21,13 @@ public class SettingActivity extends AppCompatActivity {
 
     @SuppressWarnings("ResourceType")
     private void initComponents() {
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.abs_setting);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar().setCustomView(R.layout.abs_setting);
 
-        getSupportActionBar().getCustomView().findViewById(R.id.btn_setting_back).setOnClickListener(btn_back_click_listener);
+            getSupportActionBar().getCustomView().
+                    findViewById(R.id.btn_setting_back).setOnClickListener(btn_back_click_listener);
+        }
     }
 
     private View.OnClickListener btn_back_click_listener = new View.OnClickListener() {

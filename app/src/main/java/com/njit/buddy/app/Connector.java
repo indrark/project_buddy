@@ -1,6 +1,5 @@
 package com.njit.buddy.app;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 

@@ -17,7 +17,9 @@ import com.njit.buddy.app.fragment.MoodFragment;
 import com.njit.buddy.app.fragment.MoreFragment;
 import com.njit.buddy.app.fragment.NewsFragment;
 
-
+/**
+ * @author toyknight 8/16/2015.
+ */
 public class BuddyActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final int TAB_NEWS = 0x001;

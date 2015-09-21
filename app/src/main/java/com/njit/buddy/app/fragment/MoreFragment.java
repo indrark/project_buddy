@@ -13,13 +13,9 @@ import com.njit.buddy.app.R;
 import com.njit.buddy.app.SettingActivity;
 
 /**
- * Created by toyknight on 8/15/2015.
+ * @author toyknight on 8/15/2015.
  */
 public class MoreFragment extends Fragment implements View.OnClickListener {
-
-    private View btn_account;
-    private View btn_profile;
-    private View btn_setting;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,9 +25,9 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initComponents(View view) {
-        btn_account = view.findViewById(R.id.btn_account);
-        btn_profile = view.findViewById(R.id.btn_profile);
-        btn_setting = view.findViewById(R.id.btn_setting);
+        View btn_account = view.findViewById(R.id.btn_account);
+        View btn_profile = view.findViewById(R.id.btn_profile);
+        View btn_setting = view.findViewById(R.id.btn_setting);
 
         btn_account.setOnTouchListener(btn_touch_listener);
         btn_account.setOnClickListener(this);

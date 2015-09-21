@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 /**
- * Created by toyknight on 8/16/2015.
+ * @author toyknight 8/16/2015.
  */
 public class AccountActivity extends AppCompatActivity {
 
@@ -21,10 +21,13 @@ public class AccountActivity extends AppCompatActivity {
 
     @SuppressWarnings("ResourceType")
     private void initComponents() {
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.abs_account);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar().setCustomView(R.layout.abs_account);
 
-        getSupportActionBar().getCustomView().findViewById(R.id.btn_account_back).setOnClickListener(btn_back_click_listener);
+            getSupportActionBar().getCustomView().
+                    findViewById(R.id.btn_account_back).setOnClickListener(btn_back_click_listener);
+        }
     }
 
     private View.OnClickListener btn_back_click_listener = new View.OnClickListener() {

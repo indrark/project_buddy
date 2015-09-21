@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.njit.buddy.app.R;
 
 /**
- * Created by toyknight on 8/15/2015.
+ * @author toyknight 8/15/2015.
  */
 public class AttentionFragment extends Fragment {
 

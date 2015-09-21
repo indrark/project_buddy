@@ -1,5 +1,6 @@
 package com.njit.buddy.app;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -11,10 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
 
-import java.util.Calendar;
-
 /**
- * Created by toyknight on 8/16/2015.
+ * @author toyknight 8/16/2015.
  */
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
@@ -32,12 +31,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     @SuppressWarnings("ResourceType")
     private void initComponents() {
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.abs_profile);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar().setCustomView(R.layout.abs_profile);
 
-        getSupportActionBar().getCustomView().findViewById(R.id.btn_profile_back).setOnClickListener(btn_back_click_listener);
-        getSupportActionBar().getCustomView().findViewById(R.id.btn_profile_edit).setOnClickListener(btn_edit_click_listener);
-        getSupportActionBar().getCustomView().findViewById(R.id.btn_profile_edit).setVisibility(View.INVISIBLE);
+            getSupportActionBar().getCustomView().findViewById(R.id.btn_profile_back).setOnClickListener(btn_back_click_listener);
+            getSupportActionBar().getCustomView().findViewById(R.id.btn_profile_edit).setOnClickListener(btn_edit_click_listener);
+            getSupportActionBar().getCustomView().findViewById(R.id.btn_profile_edit).setVisibility(View.INVISIBLE);
+        }
 
         View btn_birthday = findViewById(R.id.btn_birthday);
         View btn_sex = findViewById(R.id.btn_sex);
@@ -57,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void createDialogs() {
         AlertDialog.Builder birthday_builder = new AlertDialog.Builder(this);
         View birthday_dialog_content = getLayoutInflater().inflate(R.layout.editor_birthday, null);
-        birthday_picker = (DatePicker)birthday_dialog_content.findViewById(R.id.birthday_picker);
+        birthday_picker = (DatePicker) birthday_dialog_content.findViewById(R.id.birthday_picker);
         birthday_builder.setView(birthday_dialog_content);
         birthday_builder.setPositiveButton(getResources().getString(R.string.label_set), new DialogInterface.OnClickListener() {
             @Override
