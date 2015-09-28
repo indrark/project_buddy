@@ -27,6 +27,7 @@ public class AccountActivity extends AppCompatActivity {
 
             getSupportActionBar().getCustomView().
                     findViewById(R.id.btn_account_back).setOnClickListener(btn_back_click_listener);
+            findViewById(R.id.btn_logout).setOnClickListener(btn_logout_click_listener);
         }
     }
 
@@ -34,8 +35,20 @@ public class AccountActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getBaseContext(), BuddyActivity.class);
+            finish();
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+
+        }
+
+    };
+
+    private View.OnClickListener btn_logout_click_listener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getBaseContext(), LoginActivity.class);
             startActivity(intent);
+            finish();
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
         }
 

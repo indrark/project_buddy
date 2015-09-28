@@ -31,8 +31,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
-            startActivity(intent);
+            finish();
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
         }
 

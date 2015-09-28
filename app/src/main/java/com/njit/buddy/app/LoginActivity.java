@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.*;
 import android.database.Cursor;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -34,13 +36,6 @@ import java.util.List;
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
@@ -50,6 +45,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+    private AlertDialog register_dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,14 +77,82 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
         });
 
+        Button mEmailRegisterButton = (Button) findViewById(R.id.email_register_button);
+        mEmailRegisterButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showRegisterDialog();
+            }
+        });
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        AlertDialog.Builder register_builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        register_builder.setView(inflater.inflate(R.layout.dialog_register, null));
+        register_dialog = register_builder.create();
     }
 
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
     }
 
+    public void showRegisterDialog() {
+        register_dialog.show();
+        register_dialog.findViewById(R.id.btn_send_verification).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptSendVerificationCode();
+            }
+        });
+        register_dialog.findViewById(R.id.btn_register).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptRegister();
+            }
+        });
+    }
+
+    public void attemptSendVerificationCode() {
+        EditText et_email = (EditText) register_dialog.findViewById(R.id.et_email);
+        String email = et_email.getText().toString();
+        if (TextUtils.isEmpty(email)) {
+            et_email.setError(getString(R.string.error_field_required));
+        } else {
+            //TODO: Send email to server
+            ((TextView) register_dialog.findViewById(R.id.tv_register_info)).setText(getResources().getText(R.string.msg_verification_sent));
+        }
+    }
+
+    public void attemptRegister() {
+        EditText et_email = (EditText) register_dialog.findViewById(R.id.et_email);
+        String email = et_email.getText().toString();
+        EditText et_password = (EditText) register_dialog.findViewById(R.id.et_password);
+        String password = et_password.getText().toString();
+        mPasswordView.setText(password);
+        if (TextUtils.isEmpty(email)) {
+            et_email.setError(getString(R.string.error_field_required));
+            return;
+        } else {
+            if (isEmailValid(email)) {
+                mEmailView.setText(email);
+            } else {
+                return;
+            }
+        }
+        if (TextUtils.isEmpty(password)) {
+            et_password.setError(getString(R.string.error_field_required));
+            return;
+        } else {
+            if (isPasswordValid(password)) {
+                mPasswordView.setText(password);
+            } else {
+                return;
+            }
+        }
+        attemptLogin();
+    }
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -222,6 +287,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        //do nothing
+    }
+
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -265,21 +335,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(getResources().getString(R.string.key_username), mEmail);
             editor.putString(getResources().getString(R.string.key_password), mPassword);
-            editor.commit();
+            editor.apply();
 
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
             }
 
             // TODO: register the new account here.

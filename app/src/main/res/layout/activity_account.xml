@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_change_password"
-            android:id="@+id/button"
+            android:id="@+id/btn_change_password"
             android:layout_gravity="center_horizontal"
             android:padding="@dimen/widget_margin"/>
 
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_logout"
-            android:id="@+id/button2"
+            android:id="@+id/btn_logout"
             android:layout_gravity="center_horizontal"
             android:padding="@dimen/widget_margin"/>
 </LinearLayout>
