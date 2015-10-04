@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,6 +17,9 @@ import com.njit.buddy.app.fragment.AttentionFragment;
 import com.njit.buddy.app.fragment.MoodFragment;
 import com.njit.buddy.app.fragment.MoreFragment;
 import com.njit.buddy.app.fragment.NewsFragment;
+import com.njit.buddy.app.network.Connector;
+import com.njit.buddy.app.network.PostCreateTask;
+import org.json.JSONObject;
 
 /**
  * @author toyknight 8/16/2015.
@@ -42,6 +46,8 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     private AlertDialog category_list;
     private AlertDialog post_dialog;
     private EditText content_input;
+
+    private int selected_category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,7 +257,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void showPostDialog(int selected_category) {
-        //record selected category
+        this.selected_category = selected_category;
         content_input.setText("");
         category_list.dismiss();
         post_dialog.show();
@@ -260,7 +266,17 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     private void tryPost() {
         String content = content_input.getText().toString();
         post_dialog.dismiss();
-        //send the post
+        PostCreateTask task = new PostCreateTask() {
+            @Override
+            protected void onPostExecute(JSONObject result) {
+                if (result == null) {
+                    Log.d("Test", "error");
+                } else {
+                    Log.d("Test", result.toString());
+                }
+            }
+        };
+        task.execute(Integer.toString(selected_category), content);
     }
 
 }

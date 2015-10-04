@@ -1,4 +1,4 @@
-package com.njit.buddy.app;
+package com.njit.buddy.app.network;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,6 +11,8 @@ import java.util.List;
  * @author toyknight 8/14/2015.
  */
 public class Connector {
+
+    public static final String SERVER_ADDRESS = "http://54.174.64.238:8080";
 
     private static final String GET = "GET";
     private static final String POST = "POST";
