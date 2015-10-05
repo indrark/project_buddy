@@ -1,7 +1,6 @@
 package com.njit.buddy.app.network;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
