@@ -19,6 +19,7 @@ import com.njit.buddy.app.fragment.MoreFragment;
 import com.njit.buddy.app.fragment.NewsFragment;
 import com.njit.buddy.app.network.Connector;
 import com.njit.buddy.app.network.PostCreateTask;
+import com.njit.buddy.app.network.PostViewTask;
 import org.json.JSONObject;
 
 /**
@@ -178,6 +179,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
                     transaction.add(R.id.content, news_fragment);
                 } else {
                     transaction.show(news_fragment);
+                    tryUpdate();
                 }
                 updateActionBar(getResources().getString(R.string.tab_news), true);
                 current_tab = TAB_NEWS;
@@ -266,17 +268,23 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     private void tryPost() {
         String content = content_input.getText().toString();
         post_dialog.dismiss();
-        PostCreateTask task = new PostCreateTask() {
+        PostCreateTask task = new PostCreateTask();
+        task.execute(Integer.toString(selected_category), content);
+        tryUpdate();
+    }
+
+    private void tryUpdate() {
+        PostViewTask task = new PostViewTask() {
             @Override
             protected void onPostExecute(JSONObject result) {
                 if (result == null) {
-                    Log.d("Test", "error");
+                    Log.d("Error", "Cannot fetch post list");
                 } else {
-                    Log.d("Test", result.toString());
+                    news_fragment.updateNews(result);
                 }
             }
         };
-        task.execute(Integer.toString(selected_category), content);
+        task.execute("0", "10");
     }
 
 }

@@ -20,6 +20,7 @@ public class PostCreateTask extends AsyncTask<String, Void, JSONObject> {
             JSONObject request_body = new JSONObject();
             request_body.put("category_id", category);
             request_body.put("content", content);
+            request_body.put("uid", "34");
 
             String result = Connector.executePost(Connector.SERVER_ADDRESS + "/post/create", request_body.toString());
             return new JSONObject(result);

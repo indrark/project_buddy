@@ -1,6 +1,7 @@
 package com.njit.buddy.app.network;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,13 +14,15 @@ public class PostViewTask extends AsyncTask<String, Void, JSONObject> {
 
     @Override
     protected JSONObject doInBackground(String... params) {
-        String filter = params[0];
+        String start = params[0];
+        String count = params[1];
 
         try {
             JSONObject request_body = new JSONObject();
-            request_body.put("filter", filter);
+            request_body.put("start", start);
+            request_body.put("count", count);
 
-            String result = Connector.executePost(Connector.SERVER_ADDRESS + "/post/create", request_body.toString());
+            String result = Connector.executePost(Connector.SERVER_ADDRESS + "/post/list", request_body.toString());
             return new JSONObject(result);
         } catch (JSONException ex) {
             return null;
