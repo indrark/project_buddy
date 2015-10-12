@@ -27,6 +27,7 @@
     <string name="label_race">Race</string>
     <string name="label_undefined">Undefined</string>
     <string name="label_set">Set</string>
+    <string name="label_hug">Hug</string>
 
     <string name="msg_category">Pick a category</string>
     <string name="msg_say_something">Say something…</string>

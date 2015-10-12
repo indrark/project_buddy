@@ -20,6 +20,7 @@ import com.njit.buddy.app.fragment.NewsFragment;
 import com.njit.buddy.app.network.Connector;
 import com.njit.buddy.app.network.PostCreateTask;
 import com.njit.buddy.app.network.PostViewTask;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -276,7 +277,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     private void tryUpdate() {
         PostViewTask task = new PostViewTask() {
             @Override
-            protected void onPostExecute(JSONObject result) {
+            protected void onPostExecute(JSONArray result) {
                 if (result == null) {
                     Log.d("Error", "Cannot fetch post list");
                 } else {

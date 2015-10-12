@@ -7,9 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TableLayout.LayoutParams;
-import android.widget.TextView;
 import com.njit.buddy.app.R;
+import com.njit.buddy.app.widget.PostPanel;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,18 +23,19 @@ public class NewsFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_news, container, false);
     }
 
-    public void updateNews(JSONObject data) {
+    public void updateNews(JSONArray list) {
         try {
             LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.news_layout);
             layout.removeAllViews();
 
-            JSONArray list = data.getJSONArray("content");
             for (int i = 0; i < list.length(); i++) {
                 JSONObject element = list.getJSONObject(i);
-                TextView tv = new TextView(getActivity());
-                tv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-                tv.setText(element.getString("username") + " says: " + element.getString("content"));
-                layout.addView(tv);
+                PostPanel post = new PostPanel(getActivity(), element);
+                layout.addView(post);
+//                TextView tv = new TextView(getActivity());
+//                tv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+//                tv.setText(element.getString("username") + " says: " + element.getString("content"));
+//                layout.addView(tv);
             }
         } catch (JSONException ex) {
             Log.d("Error", ex.toString());
