@@ -38,6 +38,7 @@
     <string name="tab_more">More</string>
 
     <string name="key_preference">preference</string>
+    <string name="key_email">email</string>
     <string name="key_username">username</string>
     <string name="key_password">password</string>
     <string name="key_tab">tab</string>

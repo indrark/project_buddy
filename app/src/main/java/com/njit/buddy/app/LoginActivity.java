@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.njit.buddy.app.network.Connector;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +53,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     private AlertDialog register_dialog;
 
+    private String email;
+    private String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +70,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    email = mEmailView.getText().toString();
+                    password = mPasswordView.getText().toString();
                     attemptLogin();
                     return true;
                 }
@@ -168,13 +178,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
         boolean cancel = false;
         View focusView = null;
-
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
@@ -328,14 +333,32 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            //For debug only
-            SharedPreferences preferences =
-                    getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(getResources().getString(R.string.key_username), mEmail);
-            editor.putString(getResources().getString(R.string.key_password), mPassword);
-            editor.apply();
+            boolean login_success;
+            try {
+                JSONObject request_body = new JSONObject();
+                request_body.put("email", mEmail);
+                request_body.put("password", mPassword);
+
+                String result = Connector.executePost(Connector.SERVER_ADDRESS + "/hug", request_body.toString());
+                JSONObject response = new JSONObject(result);
+                if (response.getInt("responsevalue") == 1) {
+                    SharedPreferences preferences =
+                            getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(getResources().getString(R.string.key_email), mEmail);
+                    editor.putString(getResources().getString(R.string.key_password), mPassword);
+                    editor.apply();
+                    login_success = true;
+                } else {
+                    login_success = false;
+                }
+            } catch (JSONException ex) {
+                Log.d("Login", ex.toString());
+                login_success = false;
+            } catch (IOException ex) {
+                Log.d("Login", ex.toString());
+                login_success = false;
+            }
 
             try {
                 // Simulate network access.
@@ -343,9 +366,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             } catch (InterruptedException e) {
                 return false;
             }
-
-            // TODO: register the new account here.
-            return true;
+            return login_success;
         }
 
         @Override

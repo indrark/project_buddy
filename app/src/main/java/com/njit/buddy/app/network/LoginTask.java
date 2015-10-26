@@ -7,18 +7,19 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 /**
- * @author toyknight 10/8/2015.
+ * @author toyknight 10/22/2015.
  */
-public class HugTask extends AsyncTask<Integer, Void, Integer> {
+public class LoginTask extends AsyncTask<String, Void, Integer> {
 
     @Override
-    protected Integer doInBackground(Integer... params) {
-        Integer pid = params[0];
+    protected Integer doInBackground(String... params) {
+        String email = params[0];
+        String password = params[1];
 
         try {
             JSONObject request_body = new JSONObject();
-            request_body.put("pid", pid);
-            request_body.put("uid", "31");
+            request_body.put("email", email);
+            request_body.put("password", password);
 
             String result = Connector.executePost(Connector.SERVER_ADDRESS + "/hug", request_body.toString());
             JSONObject response = new JSONObject(result);
