@@ -70,10 +70,10 @@ public class LoginActivity extends Activity {
             }
         });
 
-        boolean auto_login = getIntent().getExtras().getBoolean("auto_login", false);
+        Boolean auto_login = getIntent().getBooleanExtra("auto_login", false);
         if (auto_login) {
-            String email = getIntent().getExtras().getString("email");
-            String password = getIntent().getExtras().getString("password");
+            String email = getIntent().getStringExtra("email");
+            String password = getIntent().getStringExtra("password");
             attemptLogin(email, password);
         }
     }

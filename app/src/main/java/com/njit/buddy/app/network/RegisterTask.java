@@ -24,9 +24,9 @@ public abstract class RegisterTask extends AsyncTask<String, Void, Boolean> {
             request_body.put("username", username);
             request_body.put("password", password);
 
-            String result = Connector.executePost(Connector.SERVER_ADDRESS + "/login", request_body.toString());
+            String result = Connector.executePost(Connector.SERVER_ADDRESS + "/register", request_body.toString());
             JSONObject response = new JSONObject(result);
-            return response.getInt("responsecode") == 1;
+            return response.getInt("responsevalue") == 1;
         } catch (JSONException ex) {
             Log.d("Login", ex.toString());
             return false;

@@ -24,6 +24,7 @@ public abstract class LoginTask extends AsyncTask<String, Void, String> {
 
             String result = Connector.executePost(Connector.SERVER_ADDRESS + "/login", request_body.toString());
             JSONObject response = new JSONObject(result);
+            System.out.println(response.getString("token"));
             return response.getString("token");
         } catch (JSONException ex) {
             Log.d("Login", ex.toString());

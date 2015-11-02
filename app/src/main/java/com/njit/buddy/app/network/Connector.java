@@ -70,7 +70,7 @@ public class Connector {
         connection.setReadTimeout(10000);
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setRequestProperty("Accept", "*/*");
-        connection.setRequestProperty("token", token);
+        connection.setRequestProperty("X-Auth-Token", token);
         connection.setRequestMethod(POST);
         connection.setDoOutput(true);
         connection.setDoInput(true);
