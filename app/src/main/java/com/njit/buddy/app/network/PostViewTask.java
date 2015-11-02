@@ -21,7 +21,6 @@ public class PostViewTask extends AsyncTask<String, Void, JSONArray> {
             JSONObject request_body = new JSONObject();
             request_body.put("start", start);
             request_body.put("count", count);
-            request_body.put("uid", "31");
 
             String result = Connector.executePost(Connector.SERVER_ADDRESS + "/post/list", request_body.toString());
             return new JSONArray(result);
