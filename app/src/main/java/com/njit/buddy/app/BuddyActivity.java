@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,11 +16,9 @@ import com.njit.buddy.app.fragment.AttentionFragment;
 import com.njit.buddy.app.fragment.MoodFragment;
 import com.njit.buddy.app.fragment.MoreFragment;
 import com.njit.buddy.app.fragment.NewsFragment;
-import com.njit.buddy.app.network.Connector;
 import com.njit.buddy.app.network.PostCreateTask;
 import com.njit.buddy.app.network.PostViewTask;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * @author toyknight 8/16/2015.
@@ -56,49 +53,9 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buddy);
 
-        Connector.initialize();
         initComponents();
-        createDialogs();
-
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
-        String username = preferences.getString(getResources().getString(R.string.key_username), null);
-        String password = preferences.getString(getResources().getString(R.string.key_password), null);
-        if (username == null || password == null) {
-            gotoLoginScreen();
-        }
 
         setTabSelection(TAB_NEWS);
-    }
-
-    private void createDialogs() {
-        //create category list
-        AlertDialog.Builder category_builder = new AlertDialog.Builder(this);
-        category_builder.setTitle(R.string.msg_category)
-                .setItems(R.array.category, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        showPostDialog(which);
-                    }
-                });
-        category_list = category_builder.create();
-        //create post dialog
-        AlertDialog.Builder post_builder = new AlertDialog.Builder(this);
-        post_builder.setTitle(R.string.msg_say_something);
-        content_input = new EditText(this);
-        post_builder.setView(content_input);
-        post_builder.setPositiveButton(getResources().getString(R.string.label_post), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                tryPost();
-            }
-        });
-        post_builder.setNegativeButton(getResources().getString(R.string.label_cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        post_dialog = post_builder.create();
     }
 
     @Override
@@ -136,11 +93,39 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
 
         View btn_create_post = findViewById(R.id.btn_create_post);
         btn_create_post.setOnClickListener(this);
+
+        createDialogs();
     }
 
-    private void gotoLoginScreen() {
-        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-        startActivity(intent);
+    private void createDialogs() {
+        //create category list
+        AlertDialog.Builder category_builder = new AlertDialog.Builder(this);
+        category_builder.setTitle(R.string.msg_category)
+                .setItems(R.array.category, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        showPostDialog(which);
+                    }
+                });
+        category_list = category_builder.create();
+        //create post dialog
+        AlertDialog.Builder post_builder = new AlertDialog.Builder(this);
+        post_builder.setTitle(R.string.msg_say_something);
+        content_input = new EditText(this);
+        post_builder.setView(content_input);
+        post_builder.setPositiveButton(getResources().getString(R.string.label_post), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tryPost();
+            }
+        });
+        post_builder.setNegativeButton(getResources().getString(R.string.label_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        post_dialog = post_builder.create();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.njit.buddy.app.widget;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -18,15 +17,18 @@ import java.util.Date;
 /**
  * @author toyknight on 10/8/2015.
  */
-@SuppressLint("ViewConstructor")
-public class PostPanel extends RelativeLayout {
+public class PostView extends RelativeLayout {
 
-    private final JSONObject post_data;
+    private JSONObject post_data;
 
-    public PostPanel(Context context, JSONObject post_data) {
+    public PostView(Context context) {
+        this(context, null);
+    }
+
+    public PostView(Context context, JSONObject post_data) {
         super(context);
-        this.post_data = post_data;
-        inflate(getContext(), R.layout.panel_post, this);
+        setPostDate(post_data);
+        View.inflate(getContext(), R.layout.view_post, this);
 
         if (getPostData() != null) {
             try {
@@ -51,14 +53,19 @@ public class PostPanel extends RelativeLayout {
         }
     }
 
+    public void setPostDate(JSONObject post_data) {
+        this.post_data = post_data;
+    }
+
     public JSONObject getPostData() {
         return post_data;
     }
 
     public void updateHug() throws JSONException {
         Button btn_hug = (Button) findViewById(R.id.btn_hug);
-        int hug = getPostData().getInt("hug");
-        btn_hug.setText(getResources().getString(R.string.label_hug) + ": " + hug);
+        Button btn_hugged = (Button) findViewById(R.id.btn_hugged);
+        int hugged = getPostData().getInt("hug");
+        btn_hugged.setText(Integer.toString(hugged));
         btn_hug.setEnabled(getPostData().getInt("huged") == 0);
     }
 

@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:padding="@dimen/icon_margin"
-              android:background="@drawable/background_post"
+              android:background="@drawable/border_unchecked"
               android:layout_marginBottom="@dimen/icon_margin">
 
     <LinearLayout
@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Hello World!"
+                android:text="@string/label_empty"
                 android:id="@+id/tv_content"
                 android:gravity="left"/>
     </LinearLayout>
@@ -74,6 +74,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/label_hug"
                 android:id="@+id/btn_hug"/>
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:id="@+id/btn_hugged"/>
 
     </LinearLayout>
 </LinearLayout>

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.njit.buddy.app.R;
-import com.njit.buddy.app.widget.PostPanel;
+import com.njit.buddy.app.widget.PostView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,7 +30,7 @@ public class NewsFragment extends Fragment {
 
             for (int i = 0; i < list.length(); i++) {
                 JSONObject element = list.getJSONObject(i);
-                PostPanel post = new PostPanel(getActivity(), element);
+                PostView post = new PostView(getActivity(), element);
                 layout.addView(post);
 //                TextView tv = new TextView(getActivity());
 //                tv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));

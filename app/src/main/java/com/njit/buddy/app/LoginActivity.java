@@ -4,25 +4,17 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.content.*;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -31,14 +23,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends Activity {
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -46,12 +36,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private UserLoginTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
-    private AlertDialog register_dialog;
 
     private String email;
     private String password;
@@ -62,8 +50,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
+        mEmailView = (EditText) findViewById(R.id.email);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -79,6 +66,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
         });
 
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
+
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -91,77 +81,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mEmailRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                showRegisterDialog();
-            }
-        });
-
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-
-        AlertDialog.Builder register_builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-        register_builder.setView(inflater.inflate(R.layout.dialog_register, null));
-        register_dialog = register_builder.create();
-    }
-
-    private void populateAutoComplete() {
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    public void showRegisterDialog() {
-        register_dialog.show();
-        register_dialog.findViewById(R.id.btn_send_verification).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptSendVerificationCode();
-            }
-        });
-        register_dialog.findViewById(R.id.btn_register).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptRegister();
+                gotoRegisterPage();
             }
         });
     }
 
-    public void attemptSendVerificationCode() {
-        EditText et_email = (EditText) register_dialog.findViewById(R.id.et_email);
-        String email = et_email.getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            et_email.setError(getString(R.string.error_field_required));
-        } else {
-            //TODO: Send email to server
-            ((TextView) register_dialog.findViewById(R.id.tv_register_info)).setText(getResources().getText(R.string.msg_verification_sent));
-        }
-    }
-
-    public void attemptRegister() {
-        EditText et_email = (EditText) register_dialog.findViewById(R.id.et_email);
-        String email = et_email.getText().toString();
-        EditText et_password = (EditText) register_dialog.findViewById(R.id.et_password);
-        String password = et_password.getText().toString();
-        mPasswordView.setText(password);
-        if (TextUtils.isEmpty(email)) {
-            et_email.setError(getString(R.string.error_field_required));
-            return;
-        } else {
-            if (isEmailValid(email)) {
-                mEmailView.setText(email);
-            } else {
-                return;
-            }
-        }
-        if (TextUtils.isEmpty(password)) {
-            et_password.setError(getString(R.string.error_field_required));
-            return;
-        } else {
-            if (isPasswordValid(password)) {
-                mPasswordView.setText(password);
-            } else {
-                return;
-            }
-        }
-        attemptLogin();
+    public void gotoRegisterPage() {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     /**
@@ -259,62 +187,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<String>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-    @Override
     public void onBackPressed() {
         //do nothing
-    }
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
     }
 
     /**
@@ -339,7 +213,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 request_body.put("email", mEmail);
                 request_body.put("password", mPassword);
 
-                String result = Connector.executePost(Connector.SERVER_ADDRESS + "/hug", request_body.toString());
+                String result = Connector.executePost(Connector.SERVER_ADDRESS + "/login", request_body.toString());
                 JSONObject response = new JSONObject(result);
                 if (response.getInt("responsevalue") == 1) {
                     SharedPreferences preferences =
@@ -388,6 +262,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
         }
     }
+
 }
 
 
