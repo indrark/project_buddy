@@ -14,8 +14,9 @@
 
     <string name="msg_verification_sent">Verification code has been sent</string>
 
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_invalid_email">Only NJIT email is allowed</string>
+    <string name="error_invalid_password">Password must be at least 8 characters long</string>
+    <string name="error_password_mismatch">Confirmation password mismatch</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
 </resources>

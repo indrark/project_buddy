@@ -5,7 +5,7 @@
               android:layout_height="wrap_content"
               android:padding="@dimen/icon_margin"
               android:background="@drawable/border_unchecked"
-              android:layout_marginBottom="@dimen/icon_margin">
+              android:layout_marginTop="@dimen/icon_margin">
 
     <LinearLayout
             android:orientation="horizontal"

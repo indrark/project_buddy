@@ -1,11 +1,11 @@
 package com.njit.buddy.app;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Window;
 import android.view.WindowManager;
 import com.njit.buddy.app.network.Connector;
@@ -31,22 +31,21 @@ public class WelcomeActivity extends Activity {
     }
 
     private void initialize() {
-        Connector.initialize();
-//        if (getSession() == null) {
-//            Intent intent = new Intent(this, LoginActivity.class);
-//            startActivity(intent);
-//        } else {
-//            Intent intent = new Intent(this, BuddyActivity.class);
-//            startActivity(intent);
-//        }
-        Intent intent = new Intent(this, BuddyActivity.class);
-        startActivity(intent);
+        String token = getToken();
+        if (token == null) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        } else {
+            Connector.setAuthenticationToken(token);
+            Intent intent = new Intent(this, BuddyActivity.class);
+            startActivity(intent);
+        }
         finish();
     }
 
-    private String getSession() {
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
-        return preferences.getString(getResources().getString(R.string.key_session), null);
+    private String getToken() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        return preferences.getString(getResources().getString(R.string.key_token), null);
     }
 
 }

@@ -44,6 +44,6 @@
     <string name="key_username">username</string>
     <string name="key_password">password</string>
     <string name="key_tab">tab</string>
-    <string name="key_session">session</string>
+    <string name="key_token">token</string>
 
 </resources>

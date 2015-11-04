@@ -2,7 +2,9 @@ package com.njit.buddy.app;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
@@ -46,6 +48,10 @@ public class AccountActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(AccountActivity.this);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.remove("token");
+            editor.apply();
             Intent intent = new Intent(getBaseContext(), LoginActivity.class);
             startActivity(intent);
             finish();
