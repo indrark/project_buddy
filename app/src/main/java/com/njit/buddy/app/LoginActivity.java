@@ -17,6 +17,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.njit.buddy.app.network.Connector;
 import com.njit.buddy.app.network.LoginTask;
 import com.njit.buddy.app.util.EmailValidator;
 
@@ -152,6 +153,7 @@ public class LoginActivity extends Activity {
             m_password.setError(getString(R.string.error_incorrect_password));
             m_password.requestFocus();
         } else {
+            Connector.setAuthenticationToken(token);
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(getResources().getString(R.string.key_token), token);
