@@ -24,21 +24,16 @@ public class NewsFragment extends Fragment {
     }
 
     public void updateNews(JSONArray list) {
-        try {
-            LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.news_layout);
-            layout.removeAllViews();
-
-            for (int i = 0; i < list.length(); i++) {
+        LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.news_layout);
+        layout.removeAllViews();
+        for (int i = 0; i < list.length(); i++) {
+            try {
                 JSONObject element = list.getJSONObject(i);
                 PostView post = new PostView(getActivity(), element);
                 layout.addView(post);
-//                TextView tv = new TextView(getActivity());
-//                tv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-//                tv.setText(element.getString("username") + " says: " + element.getString("content"));
-//                layout.addView(tv);
+            } catch (JSONException ex) {
+                Log.d("Error", ex.toString());
             }
-        } catch (JSONException ex) {
-            Log.d("Error", ex.toString());
         }
     }
 

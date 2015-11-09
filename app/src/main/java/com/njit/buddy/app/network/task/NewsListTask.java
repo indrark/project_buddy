@@ -1,6 +1,7 @@
-package com.njit.buddy.app.network;
+package com.njit.buddy.app.network.task;
 
 import android.os.AsyncTask;
+import com.njit.buddy.app.network.Connector;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,7 +11,7 @@ import java.io.IOException;
 /**
  * @author by toyknight 10/3/2015.
  */
-public abstract class NewsListTask extends AsyncTask<Integer, Void, JSONArray> {
+public abstract class NewsListTask extends AsyncTask<Integer, Void, JSONArray> implements Checkable<JSONArray> {
 
     @Override
     protected JSONArray doInBackground(Integer... params) {
@@ -32,6 +33,8 @@ public abstract class NewsListTask extends AsyncTask<Integer, Void, JSONArray> {
     }
 
     @Override
-    abstract protected void onPostExecute(JSONArray result);
+    protected final void onPostExecute(JSONArray result) {
+        onSuccess(result);
+    }
 
 }

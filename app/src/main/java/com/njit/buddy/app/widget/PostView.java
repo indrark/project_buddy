@@ -7,7 +7,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.njit.buddy.app.R;
-import com.njit.buddy.app.network.HugTask;
+import com.njit.buddy.app.network.task.BellTask;
+import com.njit.buddy.app.network.task.HugTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,7 +28,7 @@ public class PostView extends RelativeLayout {
 
     public PostView(Context context, JSONObject post_data) {
         super(context);
-        setPostDate(post_data);
+        this.post_data = post_data;
         View.inflate(getContext(), R.layout.view_post, this);
 
         if (getPostData() != null) {
@@ -46,27 +47,56 @@ public class PostView extends RelativeLayout {
                         tryHug();
                     }
                 });
-                updateHug();
+                TextView btn_bell = (TextView) findViewById(R.id.btn_bell);
+                btn_bell.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tryBell();
+                    }
+                });
+                updateButtons();
             } catch (JSONException ex) {
                 Log.d("JSON", ex.toString());
             }
         }
     }
 
-    public void setPostDate(JSONObject post_data) {
-        this.post_data = post_data;
-    }
-
     public JSONObject getPostData() {
         return post_data;
     }
 
-    public void updateHug() throws JSONException {
+    public int getPostID() {
+        try {
+            return post_data.getInt("pid");
+        } catch (JSONException ex) {
+            return -1;
+        }
+    }
+
+    public void setBellVisible(boolean visible) {
+        View bell = findViewById(R.id.btn_bell);
+        if (visible) {
+            bell.setVisibility(VISIBLE);
+        } else {
+            bell.setVisibility(INVISIBLE);
+        }
+    }
+
+    public void updateButtons() throws JSONException {
+        //hug button
         Button btn_hug = (Button) findViewById(R.id.btn_hug);
         Button btn_hugged = (Button) findViewById(R.id.btn_hugged);
         int hugged = getPostData().getInt("hug");
         btn_hugged.setText(Integer.toString(hugged));
         btn_hug.setEnabled(getPostData().getInt("huged") == 0);
+        //bell button
+        TextView btn_bell = (TextView) findViewById(R.id.btn_bell);
+        int belled = getPostData().getInt("attention");
+        if (belled == 0) {
+            btn_bell.setText("Bell");
+        } else {
+            btn_bell.setText("Belled");
+        }
     }
 
     public void tryHug() {
@@ -78,7 +108,7 @@ public class PostView extends RelativeLayout {
                         int hug = getPostData().getInt("hug");
                         getPostData().put("hug", hug + 1);
                         getPostData().put("huged", 1);
-                        updateHug();
+                        updateButtons();
                     } catch (JSONException ex) {
                         Log.d("HUG", ex.toString());
                     }
@@ -87,12 +117,32 @@ public class PostView extends RelativeLayout {
                 }
             }
         };
-        try {
-            Integer pid = post_data.getInt("pid");
-            task.execute(pid);
-        } catch (JSONException ex) {
-            Log.d("HUG", ex.toString());
+        task.execute(getPostID());
+    }
+
+    public void tryBell() {
+        TextView btn_bell = (TextView) findViewById(R.id.btn_bell);
+        String text = btn_bell.getText().toString();
+        if (text.equals("Belled")) {
+            return;
         }
+        BellTask task = new BellTask() {
+            @Override
+            public void onSuccess(Integer result) {
+                TextView btn_bell = (TextView) findViewById(R.id.btn_bell);
+                String text = btn_bell.getText().toString();
+                if (text.equals("Bell")) {
+                    btn_bell.setText("Belled");
+                } else {
+                    btn_bell.setText("Bell");
+                }
+            }
+
+            @Override
+            public void onFail(int error_code) {
+            }
+        };
+        task.execute(getPostID());
     }
 
 }

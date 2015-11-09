@@ -1,6 +1,7 @@
-package com.njit.buddy.app.network;
+package com.njit.buddy.app.network.task;
 
 import android.os.AsyncTask;
+import com.njit.buddy.app.network.Connector;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,7 +19,6 @@ public class HugTask extends AsyncTask<Integer, Void, Integer> {
         try {
             JSONObject request_body = new JSONObject();
             request_body.put("pid", pid);
-            request_body.put("uid", "31");
 
             String result = Connector.executePost(Connector.SERVER_ADDRESS + "/hug", request_body.toString());
             JSONObject response = new JSONObject(result);

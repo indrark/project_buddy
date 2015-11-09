@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Bell"
-                android:id="@+id/textView2"
+                android:id="@+id/btn_bell"
                 android:layout_weight="1"/>
 
         <Button

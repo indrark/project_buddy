@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.njit.buddy.app.network.Connector;
-import com.njit.buddy.app.network.LoginTask;
+import com.njit.buddy.app.network.task.LoginTask;
 import com.njit.buddy.app.util.EmailValidator;
 
 /**
@@ -134,12 +134,12 @@ public class LoginActivity extends Activity {
         showProgress(true);
         new LoginTask() {
             @Override
-            public void onLoginSuccess(String token) {
+            public void onSuccess(String token) {
                 LoginActivity.this.onLoginSuccess(token);
             }
 
             @Override
-            public void onLoginFail(int error_code) {
+            public void onFail(int error_code) {
                 LoginActivity.this.onLoginFail(error_code);
             }
         }.execute(email, password);

@@ -14,8 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.njit.buddy.app.network.Connector;
-import com.njit.buddy.app.network.LoginTask;
-import com.njit.buddy.app.network.RegisterTask;
+import com.njit.buddy.app.network.task.LoginTask;
+import com.njit.buddy.app.network.task.RegisterTask;
 import com.njit.buddy.app.util.EmailValidator;
 import com.njit.buddy.app.util.PasswordValidator;
 
@@ -132,25 +132,25 @@ public class RegisterActivity extends Activity {
         showProgress(true);
         new LoginTask() {
             @Override
-            public void onLoginSuccess(String token) {
+            public void onSuccess(String token) {
                 RegisterActivity.this.onLoginSuccess(token);
             }
 
             @Override
-            public void onLoginFail(int error_code) {
+            public void onFail(int error_code) {
                 RegisterActivity.this.onLoginFail(error_code);
             }
         }.execute(email, password);
     }
 
     public void onLoginSuccess(String token) {
-        showProgress(false);
         Connector.setAuthenticationToken(token);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(getResources().getString(R.string.key_token), token);
         editor.apply();
         gotoBuddyPage();
+        showProgress(false);
     }
 
     public void onLoginFail(int error_code) {

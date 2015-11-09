@@ -1,6 +1,7 @@
-package com.njit.buddy.app.network;
+package com.njit.buddy.app.network.task;
 
 import android.os.AsyncTask;
+import com.njit.buddy.app.network.Connector;
 import org.json.JSONException;
 import org.json.JSONObject;
 

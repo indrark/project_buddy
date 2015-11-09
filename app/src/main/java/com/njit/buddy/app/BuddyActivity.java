@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,8 +17,8 @@ import com.njit.buddy.app.fragment.AttentionFragment;
 import com.njit.buddy.app.fragment.MoodFragment;
 import com.njit.buddy.app.fragment.MoreFragment;
 import com.njit.buddy.app.fragment.NewsFragment;
-import com.njit.buddy.app.network.PostCreateTask;
-import com.njit.buddy.app.network.NewsListTask;
+import com.njit.buddy.app.network.task.PostCreateTask;
+import com.njit.buddy.app.network.task.NewsListTask;
 import org.json.JSONArray;
 
 /**
@@ -61,7 +62,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onPause() {
         super.onPause();
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BuddyActivity.this);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(getResources().getString(R.string.key_tab), current_tab);
         editor.apply();
@@ -70,7 +71,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences(getResources().getString(R.string.key_preference), Context.MODE_PRIVATE);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BuddyActivity.this);
         setTabSelection(preferences.getInt(getResources().getString(R.string.key_tab), TAB_NEWS));
     }
 
@@ -180,6 +181,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
                 } else {
                     transaction.show(attention_fragment);
                 }
+                attention_fragment.tryUpdateAttentionList();
                 updateActionBar(getResources().getString(R.string.tab_attention), false);
                 current_tab = TAB_ATTENTION;
                 break;
@@ -262,12 +264,17 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     private void tryUpdate() {
         NewsListTask task = new NewsListTask() {
             @Override
-            protected void onPostExecute(JSONArray result) {
+            public void onSuccess(JSONArray result) {
                 if (result == null) {
                     Log.d("Error", "Cannot fetch post list");
                 } else {
                     news_fragment.updateNews(result);
                 }
+            }
+
+            @Override
+            public void onFail(int error_code) {
+
             }
         };
         task.execute(0, 10);

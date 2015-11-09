@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import com.njit.buddy.app.network.Connector;
 
 /**
  * @author toyknight 8/16/2015.
@@ -33,13 +34,29 @@ public class AccountActivity extends AppCompatActivity {
         }
     }
 
+    private void gotoBuddyActivity() {
+        Intent intent = new Intent(this, BuddyActivity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+    }
+
+    private void logout() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(AccountActivity.this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove("token");
+        editor.apply();
+        Connector.setAuthenticationToken(null);
+        Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private View.OnClickListener btn_back_click_listener = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
-            finish();
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-
+            gotoBuddyActivity();
         }
 
     };
@@ -48,14 +65,7 @@ public class AccountActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(AccountActivity.this);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.remove("token");
-            editor.apply();
-            Intent intent = new Intent(getBaseContext(), LoginActivity.class);
-            startActivity(intent);
-            finish();
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+            logout();
         }
 
     };

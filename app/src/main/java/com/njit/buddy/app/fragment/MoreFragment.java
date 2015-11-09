@@ -37,12 +37,19 @@ public class MoreFragment extends Fragment implements View.OnClickListener {
         btn_setting.setOnClickListener(this);
     }
 
+    private void gotoAccountActivity() {
+        Intent intent = new Intent(getActivity(), AccountActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+        getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_account:
-                startActivity(new Intent(getActivity(), AccountActivity.class));
-                getActivity().overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                gotoAccountActivity();
+
                 break;
             case R.id.btn_profile:
                 startActivity(new Intent(getActivity(), ProfileActivity.class));
