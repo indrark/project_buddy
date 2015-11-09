@@ -70,13 +70,6 @@ public class LoginActivity extends Activity {
                 gotoRegisterPage();
             }
         });
-
-        Boolean auto_login = getIntent().getBooleanExtra("auto_login", false);
-        if (auto_login) {
-            String email = getIntent().getStringExtra("email");
-            String password = getIntent().getStringExtra("password");
-            attemptLogin(email, password);
-        }
     }
 
     public void gotoRegisterPage() {
@@ -88,6 +81,7 @@ public class LoginActivity extends Activity {
     public void gotoBuddyPage() {
         Intent intent = new Intent(this, BuddyActivity.class);
         startActivity(intent);
+        showProgress(false);
         finish();
     }
 
@@ -138,28 +132,33 @@ public class LoginActivity extends Activity {
         // Show a progress spinner, and kick off a background task to
         // perform the user login attempt.
         showProgress(true);
-
         new LoginTask() {
             @Override
-            protected void onPostExecute(final String token) {
-                onLoginPost(token);
+            public void onLoginSuccess(String token) {
+                LoginActivity.this.onLoginSuccess(token);
+            }
+
+            @Override
+            public void onLoginFail(int error_code) {
+                LoginActivity.this.onLoginFail(error_code);
             }
         }.execute(email, password);
     }
 
-    public void onLoginPost(final String token) {
+    public void onLoginSuccess(String token) {
+        Connector.setAuthenticationToken(token);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(getResources().getString(R.string.key_token), token);
+        editor.remove(getResources().getString(R.string.key_tab));
+        editor.apply();
+        gotoBuddyPage();
+    }
+
+    public void onLoginFail(int error_code) {
         showProgress(false);
-        if (token == null) {
-            m_password.setError(getString(R.string.error_incorrect_password));
-            m_password.requestFocus();
-        } else {
-            Connector.setAuthenticationToken(token);
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString(getResources().getString(R.string.key_token), token);
-            editor.apply();
-            gotoBuddyPage();
-        }
+        m_password.setError(getString(R.string.error_incorrect_password));
+        m_password.requestFocus();
     }
 
     private boolean isEmailValid(String email) {

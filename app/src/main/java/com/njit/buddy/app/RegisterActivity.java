@@ -5,12 +5,16 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import com.njit.buddy.app.network.Connector;
+import com.njit.buddy.app.network.LoginTask;
 import com.njit.buddy.app.network.RegisterTask;
 import com.njit.buddy.app.util.EmailValidator;
 import com.njit.buddy.app.util.PasswordValidator;
@@ -118,23 +122,51 @@ public class RegisterActivity extends Activity {
     private void onRegisterPost(final Boolean approved) {
         showProgress(false);
         if (approved) {
-            attemptLogin();
+            String email = m_email.getText().toString();
+            String password = m_password.getText().toString();
+            attemptLogin(email, password);
         }
     }
 
-    private void attemptLogin() {
-        String email = m_email.getText().toString();
-        String password = m_password.getText().toString();
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra("auto_login", true);
-        intent.putExtra("email", email);
-        intent.putExtra("password", password);
-        startActivity(intent);
-        finish();
+    private void attemptLogin(String email, String password) {
+        showProgress(true);
+        new LoginTask() {
+            @Override
+            public void onLoginSuccess(String token) {
+                RegisterActivity.this.onLoginSuccess(token);
+            }
+
+            @Override
+            public void onLoginFail(int error_code) {
+                RegisterActivity.this.onLoginFail(error_code);
+            }
+        }.execute(email, password);
+    }
+
+    public void onLoginSuccess(String token) {
+        showProgress(false);
+        Connector.setAuthenticationToken(token);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(getResources().getString(R.string.key_token), token);
+        editor.apply();
+        gotoBuddyPage();
+    }
+
+    public void onLoginFail(int error_code) {
+        showProgress(false);
+        m_password.setError(getString(R.string.error_incorrect_password));
+        m_password.requestFocus();
     }
 
     public void gotoLoginPage() {
         Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void gotoBuddyPage() {
+        Intent intent = new Intent(this, BuddyActivity.class);
         startActivity(intent);
         finish();
     }

@@ -10,12 +10,12 @@ import java.io.IOException;
 /**
  * @author by toyknight 10/3/2015.
  */
-public class PostViewTask extends AsyncTask<String, Void, JSONArray> {
+public abstract class NewsListTask extends AsyncTask<Integer, Void, JSONArray> {
 
     @Override
-    protected JSONArray doInBackground(String... params) {
-        String start = params[0];
-        String count = params[1];
+    protected JSONArray doInBackground(Integer... params) {
+        Integer start = params[0];
+        Integer count = params[1];
 
         try {
             JSONObject request_body = new JSONObject();
@@ -30,5 +30,8 @@ public class PostViewTask extends AsyncTask<String, Void, JSONArray> {
             return null;
         }
     }
+
+    @Override
+    abstract protected void onPostExecute(JSONArray result);
 
 }

@@ -17,7 +17,7 @@ import com.njit.buddy.app.fragment.MoodFragment;
 import com.njit.buddy.app.fragment.MoreFragment;
 import com.njit.buddy.app.fragment.NewsFragment;
 import com.njit.buddy.app.network.PostCreateTask;
-import com.njit.buddy.app.network.PostViewTask;
+import com.njit.buddy.app.network.NewsListTask;
 import org.json.JSONArray;
 
 /**
@@ -260,7 +260,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void tryUpdate() {
-        PostViewTask task = new PostViewTask() {
+        NewsListTask task = new NewsListTask() {
             @Override
             protected void onPostExecute(JSONArray result) {
                 if (result == null) {
@@ -270,7 +270,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         };
-        task.execute("0", "10");
+        task.execute(0, 10);
     }
 
 }
