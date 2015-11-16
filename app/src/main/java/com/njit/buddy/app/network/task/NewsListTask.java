@@ -1,7 +1,9 @@
 package com.njit.buddy.app.network.task;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import com.njit.buddy.app.network.Connector;
+import com.njit.buddy.app.network.ResponseValue;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,15 +28,21 @@ public abstract class NewsListTask extends AsyncTask<Integer, Void, JSONArray> i
             String result = Connector.executePost(Connector.SERVER_ADDRESS + "/post/list", request_body.toString());
             return new JSONArray(result);
         } catch (JSONException ex) {
+            Log.d("JSON", ex.toString());
             return null;
         } catch (IOException ex) {
+            Log.d("Network", ex.toString());
             return null;
         }
     }
 
     @Override
     protected final void onPostExecute(JSONArray result) {
-        onSuccess(result);
+        if (result == null) {
+            onFail(ResponseValue.BUDDY_BAD_REQUEST);
+        } else {
+            onSuccess(result);
+        }
     }
 
 }

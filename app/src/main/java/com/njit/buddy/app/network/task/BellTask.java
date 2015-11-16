@@ -26,10 +26,10 @@ public abstract class BellTask extends AsyncTask<Integer, Void, Integer> impleme
             JSONObject response = new JSONObject(result);
             return response.getInt("responsevalue");
         } catch (JSONException ex) {
-            Log.d("Login", ex.toString());
+            Log.d("Network", ex.toString());
             return ResponseValue.BUDDY_BAD_REQUEST;
         } catch (IOException ex) {
-            Log.d("Login", ex.toString());
+            Log.d("Network", ex.toString());
             return ResponseValue.BUDDY_BAD_REQUEST;
         }
     }

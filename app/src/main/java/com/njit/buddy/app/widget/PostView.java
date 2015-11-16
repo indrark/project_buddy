@@ -121,25 +121,17 @@ public class PostView extends RelativeLayout {
     }
 
     public void tryBell() {
-        TextView btn_bell = (TextView) findViewById(R.id.btn_bell);
-        String text = btn_bell.getText().toString();
-        if (text.equals("Belled")) {
-            return;
-        }
         BellTask task = new BellTask() {
             @Override
             public void onSuccess(Integer result) {
                 TextView btn_bell = (TextView) findViewById(R.id.btn_bell);
-                String text = btn_bell.getText().toString();
-                if (text.equals("Bell")) {
-                    btn_bell.setText("Belled");
-                } else {
-                    btn_bell.setText("Bell");
-                }
+                String text = btn_bell.getText().toString().equals("Bell") ? "Belled" : "Bell";
+                btn_bell.setText(text);
             }
 
             @Override
             public void onFail(int error_code) {
+                Log.d("Bell", "Error code " + error_code);
             }
         };
         task.execute(getPostID());
