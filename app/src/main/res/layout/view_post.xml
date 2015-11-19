@@ -54,20 +54,27 @@
 
         <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Flag"
                 android:id="@+id/textView"
                 android:layout_marginRight="@dimen/widget_margin"
-                />
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"/>
 
         <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Bell"
                 android:id="@+id/btn_bell"
-                android:layout_weight="1"/>
+                android:gravity="center_vertical"/>
+
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/"/>
 
         <Button
                 android:layout_width="wrap_content"
@@ -82,4 +89,5 @@
                 android:id="@+id/btn_hugged"/>
 
     </LinearLayout>
+
 </LinearLayout>
