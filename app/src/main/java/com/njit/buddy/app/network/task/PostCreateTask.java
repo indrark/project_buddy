@@ -1,7 +1,9 @@
 package com.njit.buddy.app.network.task;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import com.njit.buddy.app.network.Connector;
+import com.njit.buddy.app.network.ResponseValue;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,10 +12,10 @@ import java.io.IOException;
 /**
  * @author toyknight 10/3/2015.
  */
-public class PostCreateTask extends AsyncTask<String, Void, JSONObject> {
+public abstract class PostCreateTask extends AsyncTask<String, Void, Integer> implements ResponseHandler<Integer> {
 
     @Override
-    protected JSONObject doInBackground(String... params) {
+    protected Integer doInBackground(String... params) {
         String category = params[0];
         String content = params[1];
 
@@ -23,13 +25,24 @@ public class PostCreateTask extends AsyncTask<String, Void, JSONObject> {
             request_body.put("content", content);
 
             String result = Connector.executePost(Connector.SERVER_ADDRESS + "/post/create", request_body.toString());
-            return new JSONObject(result);
+            JSONObject response = new JSONObject(result);
+            return response.getInt("responsevalue");
         } catch (JSONException ex) {
-            return null;
+            Log.d("Network", ex.toString());
+            return ResponseValue.BUDDY_BAD_REQUEST;
         } catch (IOException ex) {
-            return null;
+            Log.d("Network", ex.toString());
+            return ResponseValue.BUDDY_BAD_REQUEST;
         }
     }
 
+    @Override
+    protected final void onPostExecute(Integer response_value) {
+        if (response_value == ResponseValue.BUDDY_OK) {
+            onSuccess(response_value);
+        } else {
+            onFail(response_value);
+        }
+    }
 
 }

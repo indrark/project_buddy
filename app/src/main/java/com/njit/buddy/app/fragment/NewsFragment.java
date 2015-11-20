@@ -80,9 +80,18 @@ public class NewsFragment extends Fragment {
     }
 
     public void tryPost(String content, int selected_category) {
-        PostCreateTask task = new PostCreateTask();
+        PostCreateTask task = new PostCreateTask() {
+            @Override
+            public void onSuccess(Integer result) {
+                tryUpdateNewsList();
+            }
+
+            @Override
+            public void onFail(int error_code) {
+                Log.d("News", "Error code " + error_code);
+            }
+        };
         task.execute(Integer.toString(selected_category), content);
-        tryUpdateNewsList();
     }
 
     public void tryUpdateNewsList() {
