@@ -1,15 +1,12 @@
 package com.njit.buddy.app;
 
 import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import com.njit.buddy.app.fragment.AttentionFragment;
 import com.njit.buddy.app.fragment.MoodFragment;
@@ -35,12 +32,6 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     private View tab_attention_layout;
     private View tab_mood_layout;
     private View tab_more_layout;
-
-    private AlertDialog category_list;
-    private AlertDialog post_dialog;
-    private EditText content_input;
-
-    private int selected_category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,41 +69,6 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
 
         View btn_create_post = findViewById(R.id.btn_create_post);
         btn_create_post.setOnClickListener(this);
-
-        createDialogs();
-    }
-
-    private void createDialogs() {
-        //create category list
-        AlertDialog.Builder category_builder = new AlertDialog.Builder(this);
-        category_builder.setTitle(R.string.msg_category)
-                .setItems(R.array.category, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        showPostDialog(which);
-                    }
-                });
-        category_list = category_builder.create();
-        //create post dialog
-        AlertDialog.Builder post_builder = new AlertDialog.Builder(this);
-        post_builder.setTitle(R.string.msg_say_something);
-        content_input = new EditText(this);
-        post_builder.setView(content_input);
-        post_builder.setPositiveButton(getResources().getString(R.string.label_post), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String content = content_input.getText().toString();
-                news_fragment.tryPost(content, selected_category);
-                post_dialog.dismiss();
-            }
-        });
-        post_builder.setNegativeButton(getResources().getString(R.string.label_cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        post_dialog = post_builder.create();
     }
 
     @Override
@@ -131,7 +87,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
                 setTabSelection(TAB_MORE);
                 break;
             case R.id.btn_create_post:
-                category_list.show();
+                news_fragment.startPostingProgress();
                 break;
         }
     }
@@ -237,13 +193,6 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
         } else {
             findViewById(R.id.btn_create_post).setVisibility(View.INVISIBLE);
         }
-    }
-
-    private void showPostDialog(int selected_category) {
-        this.selected_category = selected_category;
-        content_input.setText("");
-        category_list.dismiss();
-        post_dialog.show();
     }
 
 }
