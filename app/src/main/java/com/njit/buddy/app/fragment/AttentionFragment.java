@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.njit.buddy.app.R;
-import com.njit.buddy.app.network.task.AttentionListTask;
+import com.njit.buddy.app.entity.Post;
+import com.njit.buddy.app.network.task.PostListTask;
 import com.njit.buddy.app.widget.PostView;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * @author toyknight 8/15/2015.
@@ -25,31 +25,27 @@ public class AttentionFragment extends Fragment {
     }
 
     public void tryUpdateAttentionList() {
-        AttentionListTask task = new AttentionListTask() {
+        PostListTask task = new PostListTask() {
             @Override
-            public void onSuccess(JSONArray result) {
-                updateAttentionList(result);
+            public void onSuccess(ArrayList<Post> post_list) {
+                updateAttentionList(post_list);
             }
 
             @Override
             public void onFail(int error_code) {
+                Log.d("Attention", "Error code " + error_code);
             }
         };
-        task.execute(0, 10);
+        task.execute(0, 10, 1);
     }
 
-    private void updateAttentionList(JSONArray list) {
+    private void updateAttentionList(ArrayList<Post> post_list) {
         LinearLayout layout = (LinearLayout) getActivity().findViewById(R.id.attention_layout);
         layout.removeAllViews();
-        for (int i = 0; i < list.length(); i++) {
-            try {
-                JSONObject element = list.getJSONObject(i);
-                PostView post = new PostView(getActivity(), element);
-                post.setBellVisible(false);
-                layout.addView(post);
-            } catch (JSONException ex) {
-                Log.d("Error", ex.toString());
-            }
+        for (Post post : post_list) {
+            PostView post_view = new PostView(getActivity(), post);
+            post_view.setBellVisible(false);
+            layout.addView(post_view);
         }
     }
 

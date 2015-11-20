@@ -3,13 +3,11 @@ package com.njit.buddy.app;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,9 +15,6 @@ import com.njit.buddy.app.fragment.AttentionFragment;
 import com.njit.buddy.app.fragment.MoodFragment;
 import com.njit.buddy.app.fragment.MoreFragment;
 import com.njit.buddy.app.fragment.NewsFragment;
-import com.njit.buddy.app.network.task.PostCreateTask;
-import com.njit.buddy.app.network.task.NewsListTask;
-import org.json.JSONArray;
 
 /**
  * @author toyknight 8/16/2015.
@@ -30,8 +25,6 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     private final int TAB_ATTENTION = 0x002;
     private final int TAB_MOOD = 0x003;
     private final int TAB_MORE = 0x004;
-
-    private int current_tab;
 
     private NewsFragment news_fragment;
     private AttentionFragment attention_fragment;
@@ -57,15 +50,6 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
         initComponents();
 
         setTabSelection(TAB_NEWS);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BuddyActivity.this);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt(getResources().getString(R.string.key_tab), current_tab);
-        editor.apply();
     }
 
     @Override
@@ -117,7 +101,9 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
         post_builder.setPositiveButton(getResources().getString(R.string.label_post), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                tryPost();
+                String content = content_input.getText().toString();
+                news_fragment.tryPost(content, selected_category);
+                post_dialog.dismiss();
             }
         });
         post_builder.setNegativeButton(getResources().getString(R.string.label_cancel), new DialogInterface.OnClickListener() {
@@ -150,6 +136,13 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    private void updateCurrentTab(int tab) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BuddyActivity.this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(getResources().getString(R.string.key_tab), tab);
+        editor.apply();
+    }
+
     private void setTabSelection(int index) {
         clearTabSelection();
         //begin a new fragment transaction
@@ -166,10 +159,10 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
                     transaction.add(R.id.content, news_fragment);
                 } else {
                     transaction.show(news_fragment);
-                    tryUpdate();
                 }
+                news_fragment.tryUpdateNewsList();
                 updateActionBar(getResources().getString(R.string.tab_news), true);
-                current_tab = TAB_NEWS;
+                updateCurrentTab(TAB_NEWS);
                 break;
             case TAB_ATTENTION:
                 //change the attention tab background to checked
@@ -183,7 +176,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
                 }
                 attention_fragment.tryUpdateAttentionList();
                 updateActionBar(getResources().getString(R.string.tab_attention), false);
-                current_tab = TAB_ATTENTION;
+                updateCurrentTab(TAB_ATTENTION);
                 break;
             case TAB_MOOD:
                 //change the mood tab background to checked
@@ -196,7 +189,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
                     transaction.show(mood_fragment);
                 }
                 updateActionBar(getResources().getString(R.string.tab_mood), false);
-                current_tab = TAB_MOOD;
+                updateCurrentTab(TAB_MOOD);
                 break;
             case TAB_MORE:
                 //change the more tab background to checked
@@ -209,7 +202,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
                     transaction.show(more_fragment);
                 }
                 updateActionBar(getResources().getString(R.string.tab_more), false);
-                current_tab = TAB_MORE;
+                updateCurrentTab(TAB_MORE);
                 break;
         }
         transaction.commit();
@@ -251,33 +244,6 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
         content_input.setText("");
         category_list.dismiss();
         post_dialog.show();
-    }
-
-    private void tryPost() {
-        String content = content_input.getText().toString();
-        post_dialog.dismiss();
-        PostCreateTask task = new PostCreateTask();
-        task.execute(Integer.toString(selected_category), content);
-        tryUpdate();
-    }
-
-    private void tryUpdate() {
-        NewsListTask task = new NewsListTask() {
-            @Override
-            public void onSuccess(JSONArray result) {
-                if (result == null) {
-                    Log.d("Error", "Cannot fetch post list");
-                } else {
-                    news_fragment.updateNews(result);
-                }
-            }
-
-            @Override
-            public void onFail(int error_code) {
-
-            }
-        };
-        task.execute(0, 10);
     }
 
 }
