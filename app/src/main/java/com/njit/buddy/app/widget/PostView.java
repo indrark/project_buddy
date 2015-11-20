@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.njit.buddy.app.R;
 import com.njit.buddy.app.network.task.BellTask;
+import com.njit.buddy.app.network.task.FlagTask;
 import com.njit.buddy.app.network.task.HugTask;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,11 +41,11 @@ public class PostView extends RelativeLayout {
                 ((TextView) findViewById(R.id.tv_username)).setText(username);
                 ((TextView) findViewById(R.id.tv_date)).setText(date_string);
                 ((TextView) findViewById(R.id.tv_content)).setText(content);
-                Button btn_hug = (Button) findViewById(R.id.btn_hug);
-                btn_hug.setOnClickListener(new OnClickListener() {
+                TextView btn_flag = (TextView) findViewById(R.id.btn_flag);
+                btn_flag.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        tryHug();
+                        tryFlag();
                     }
                 });
                 TextView btn_bell = (TextView) findViewById(R.id.btn_bell);
@@ -52,6 +53,13 @@ public class PostView extends RelativeLayout {
                     @Override
                     public void onClick(View v) {
                         tryBell();
+                    }
+                });
+                Button btn_hug = (Button) findViewById(R.id.btn_hug);
+                btn_hug.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        tryHug();
                     }
                 });
                 updateButtons();
@@ -83,38 +91,34 @@ public class PostView extends RelativeLayout {
     }
 
     public void updateButtons() throws JSONException {
+        //flag button
+        TextView btn_flag = (TextView) findViewById(R.id.btn_flag);
+        btn_flag.setText(getPostData().getInt("flag") == 0 ? "Flag" : "Flagged");
+        //bell button
+        TextView btn_bell = (TextView) findViewById(R.id.btn_bell);
+        btn_bell.setText(getPostData().getInt("attention") == 0 ? "Bell" : "Belled");
         //hug button
         Button btn_hug = (Button) findViewById(R.id.btn_hug);
+        btn_hug.setText(getPostData().getInt("huged") == 0 ? "Hug" : "Hugged");
+        //hugged button
         Button btn_hugged = (Button) findViewById(R.id.btn_hugged);
         int hugged = getPostData().getInt("hug");
         btn_hugged.setText(Integer.toString(hugged));
-        btn_hug.setEnabled(getPostData().getInt("huged") == 0);
-        //bell button
-        TextView btn_bell = (TextView) findViewById(R.id.btn_bell);
-        int belled = getPostData().getInt("attention");
-        if (belled == 0) {
-            btn_bell.setText("Bell");
-        } else {
-            btn_bell.setText("Belled");
-        }
+
     }
 
-    public void tryHug() {
-        HugTask task = new HugTask() {
+    public void tryFlag() {
+        FlagTask task = new FlagTask() {
             @Override
-            protected void onPostExecute(Integer response_code) {
-                if (response_code == 1) {
-                    try {
-                        int hug = getPostData().getInt("hug");
-                        getPostData().put("hug", hug + 1);
-                        getPostData().put("huged", 1);
-                        updateButtons();
-                    } catch (JSONException ex) {
-                        Log.d("HUG", ex.toString());
-                    }
-                } else {
-                    Log.d("HUG", "Error code " + response_code);
-                }
+            public void onSuccess(Integer result) {
+                TextView btn_bell = (TextView) findViewById(R.id.btn_flag);
+                String text = btn_bell.getText().toString().equals("Flag") ? "Flagged" : "Flag";
+                btn_bell.setText(text);
+            }
+
+            @Override
+            public void onFail(int error_code) {
+                Log.d("Bell", "Error code " + error_code);
             }
         };
         task.execute(getPostID());
@@ -132,6 +136,23 @@ public class PostView extends RelativeLayout {
             @Override
             public void onFail(int error_code) {
                 Log.d("Bell", "Error code " + error_code);
+            }
+        };
+        task.execute(getPostID());
+    }
+
+    public void tryHug() {
+        HugTask task = new HugTask() {
+            @Override
+            public void onSuccess(Integer result) {
+                Button btn_hug = (Button) findViewById(R.id.btn_hug);
+                String text = btn_hug.getText().toString().equals("Hug") ? "Hugged" : "Hug";
+                btn_hug.setText(text);
+            }
+
+            @Override
+            public void onFail(int error_code) {
+                Log.d("HUG", "Error code " + error_code);
             }
         };
         task.execute(getPostID());

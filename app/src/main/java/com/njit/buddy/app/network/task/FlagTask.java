@@ -10,9 +10,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 /**
- * @author toyknight 10/8/2015.
+ * @author toyknight 11/19/2015.
  */
-public abstract class HugTask extends AsyncTask<Integer, Void, Integer> implements Checkable<Integer> {
+public abstract class FlagTask extends AsyncTask<Integer, Void, Integer> implements Checkable<Integer> {
 
     @Override
     protected Integer doInBackground(Integer... params) {
@@ -22,7 +22,7 @@ public abstract class HugTask extends AsyncTask<Integer, Void, Integer> implemen
             JSONObject request_body = new JSONObject();
             request_body.put("pid", pid);
 
-            String result = Connector.executePost(Connector.SERVER_ADDRESS + "/hug", request_body.toString());
+            String result = Connector.executePost(Connector.SERVER_ADDRESS + "/flag", request_body.toString());
             JSONObject response = new JSONObject(result);
             return response.getInt("responsevalue");
         } catch (JSONException ex) {
