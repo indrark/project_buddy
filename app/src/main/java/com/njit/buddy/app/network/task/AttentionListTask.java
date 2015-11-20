@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @author toyknight 11/9/2015.
  */
-public abstract class AttentionListTask extends AsyncTask<Integer, Void, JSONArray> implements Checkable<JSONArray> {
+public abstract class AttentionListTask extends AsyncTask<Integer, Void, JSONArray> implements ResponseHandler<JSONArray> {
 
     @Override
     protected JSONArray doInBackground(Integer... params) {

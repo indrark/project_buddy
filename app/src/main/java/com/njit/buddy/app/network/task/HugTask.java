@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @author toyknight 10/8/2015.
  */
-public abstract class HugTask extends AsyncTask<Integer, Void, Integer> implements Checkable<Integer> {
+public abstract class HugTask extends AsyncTask<Integer, Void, Integer> implements ResponseHandler<Integer> {
 
     @Override
     protected Integer doInBackground(Integer... params) {

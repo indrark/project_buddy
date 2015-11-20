@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @author toyknight 10/22/2015.
  */
-public abstract class LoginTask extends AsyncTask<String, Void, JSONObject> implements Checkable<String> {
+public abstract class LoginTask extends AsyncTask<String, Void, JSONObject> implements ResponseHandler<String> {
 
     @Override
     protected JSONObject doInBackground(String... params) {

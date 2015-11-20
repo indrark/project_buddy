@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @author toyknight 11/9/2015.
  */
-public abstract class BellTask extends AsyncTask<Integer, Void, Integer> implements Checkable<Integer> {
+public abstract class BellTask extends AsyncTask<Integer, Void, Integer> implements ResponseHandler<Integer> {
 
     @Override
     protected Integer doInBackground(Integer... params) {

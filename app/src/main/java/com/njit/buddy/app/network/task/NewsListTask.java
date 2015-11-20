@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * @author by toyknight 10/3/2015.
  */
-public abstract class NewsListTask extends AsyncTask<Integer, Void, JSONArray> implements Checkable<JSONArray> {
+public abstract class NewsListTask extends AsyncTask<Integer, Void, JSONArray> implements ResponseHandler<JSONArray> {
 
     @Override
     protected JSONArray doInBackground(Integer... params) {
