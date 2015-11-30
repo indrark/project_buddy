@@ -2,7 +2,6 @@ package com.njit.buddy.app.widget;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -14,6 +13,7 @@ import com.njit.buddy.app.network.task.BellTask;
 import com.njit.buddy.app.network.task.FlagTask;
 import com.njit.buddy.app.network.task.HugTask;
 import com.njit.buddy.app.util.DateParser;
+import com.njit.buddy.app.util.Log;
 
 /**
  * @author toyknight on 10/8/2015.
@@ -104,7 +104,7 @@ public class PostView extends RelativeLayout {
 
     public void gotoHugActivity() {
         Intent intent = new Intent(getContext(), HugActivity.class);
-        intent.putExtra("pid", getPostData().getID());
+        intent.putExtra("pid", getPostData().getPID());
         getContext().startActivity(intent);
     }
 
@@ -118,10 +118,10 @@ public class PostView extends RelativeLayout {
 
             @Override
             public void onFail(int error_code) {
-                Log.d("Bell", "Error code " + error_code);
+                Log.error("Flag", error_code);
             }
         };
-        task.execute(getPostData().getID());
+        task.execute(getPostData().getPID());
     }
 
     public void tryBell() {
@@ -134,10 +134,10 @@ public class PostView extends RelativeLayout {
 
             @Override
             public void onFail(int error_code) {
-                Log.d("Bell", "Error code " + error_code);
+                Log.error("Bell", error_code);
             }
         };
-        task.execute(getPostData().getID());
+        task.execute(getPostData().getPID());
     }
 
     public void tryHug() {
@@ -155,10 +155,10 @@ public class PostView extends RelativeLayout {
 
             @Override
             public void onFail(int error_code) {
-                Log.d("Hug", "Error code " + error_code);
+                Log.error("Hug", error_code);
             }
         };
-        task.execute(getPostData().getID());
+        task.execute(getPostData().getPID());
     }
 
 }

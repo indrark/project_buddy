@@ -160,7 +160,7 @@ public class LoginActivity extends Activity {
 
             @Override
             public void onFail(int error_code) {
-                onProfileSuccess(new Profile(0));
+                onLoginFail(error_code);
             }
         };
         task.execute(0);
@@ -170,7 +170,7 @@ public class LoginActivity extends Activity {
         SharedPreferences preferences = getSharedPreferences("buddy", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(getResources().getString(R.string.key_uid), profile.getUID());
-        editor.remove(getResources().getString(R.string.key_tab));
+        editor.putString(getResources().getString(R.string.key_username), profile.getUsername());
         editor.apply();
         gotoBuddyPage();
     }

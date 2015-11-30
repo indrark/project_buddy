@@ -159,7 +159,7 @@ public class RegisterActivity extends Activity {
 
             @Override
             public void onFail(int error_code) {
-                onProfileSuccess(new Profile(0));
+                onLoginFail(error_code);
             }
         };
         task.execute(0);

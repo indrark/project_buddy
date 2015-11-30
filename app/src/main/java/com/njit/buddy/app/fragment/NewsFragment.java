@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import com.njit.buddy.app.R;
 import com.njit.buddy.app.entity.Post;
 import com.njit.buddy.app.network.task.PostListTask;
 import com.njit.buddy.app.network.task.PostCreateTask;
+import com.njit.buddy.app.util.Log;
 import com.njit.buddy.app.widget.PostView;
 
 import java.util.ArrayList;
@@ -88,7 +88,7 @@ public class NewsFragment extends Fragment {
 
             @Override
             public void onFail(int error_code) {
-                Log.d("News", "Error code " + error_code);
+                Log.error("Post", error_code);
             }
         };
         task.execute(Integer.toString(selected_category), content);
@@ -103,7 +103,7 @@ public class NewsFragment extends Fragment {
 
             @Override
             public void onFail(int error_code) {
-                Log.d("News", "Error code " + error_code);
+                Log.error("News", error_code);
             }
         };
         task.execute(0, 10, 0);

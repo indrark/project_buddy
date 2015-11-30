@@ -23,7 +23,7 @@ public class Post {
         this.timestamp = timestamp;
     }
 
-    public int getID() {
+    public int getPID() {
         return id;
     }
 

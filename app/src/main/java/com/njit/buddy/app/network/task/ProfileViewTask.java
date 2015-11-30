@@ -42,6 +42,7 @@ public abstract class ProfileViewTask extends AsyncTask<Integer, Void, JSONObjec
         } else {
             try {
                 Profile profile = new Profile(result.getInt("uid"));
+//                profile.setUsername(result.getString("username"));
                 onSuccess(profile);
             } catch (JSONException ex) {
                 Log.d("Error", ex.toString());

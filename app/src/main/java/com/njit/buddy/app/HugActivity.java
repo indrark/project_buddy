@@ -4,12 +4,12 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.njit.buddy.app.entity.Hug;
 import com.njit.buddy.app.network.task.HugListTask;
+import com.njit.buddy.app.util.Log;
 import com.njit.buddy.app.widget.HugView;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class HugActivity extends AppCompatActivity {
 
             @Override
             public void onFail(int error_code) {
-                Log.d("Hug List", "Error code " + error_code);
+                Log.error("List Hug", error_code);
             }
         };
         task.execute(pid, 0, 10);
