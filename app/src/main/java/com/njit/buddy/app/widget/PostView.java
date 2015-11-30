@@ -1,11 +1,13 @@
 package com.njit.buddy.app.widget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.njit.buddy.app.HugActivity;
 import com.njit.buddy.app.R;
 import com.njit.buddy.app.entity.Post;
 import com.njit.buddy.app.network.task.BellTask;
@@ -47,6 +49,13 @@ public class PostView extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 tryHug();
+            }
+        });
+        Button btn_hugged = (Button) findViewById(R.id.btn_hugged);
+        btn_hugged.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoHugActivity();
             }
         });
         updateView();
@@ -93,13 +102,18 @@ public class PostView extends RelativeLayout {
         }
     }
 
+    public void gotoHugActivity() {
+        Intent intent = new Intent(getContext(), HugActivity.class);
+        intent.putExtra("pid", getPostData().getID());
+        getContext().startActivity(intent);
+    }
+
     public void tryFlag() {
         FlagTask task = new FlagTask() {
             @Override
             public void onSuccess(Integer result) {
-                TextView btn_bell = (TextView) findViewById(R.id.btn_flag);
-                String text = btn_bell.getText().toString().equals("Flag") ? "Flagged" : "Flag";
-                btn_bell.setText(text);
+                getPostData().setFlagged(!getPostData().isFlagged());
+                updateView();
             }
 
             @Override
@@ -114,9 +128,8 @@ public class PostView extends RelativeLayout {
         BellTask task = new BellTask() {
             @Override
             public void onSuccess(Integer result) {
-                TextView btn_bell = (TextView) findViewById(R.id.btn_bell);
-                String text = btn_bell.getText().toString().equals("Bell") ? "Belled" : "Bell";
-                btn_bell.setText(text);
+                getPostData().setBelled(!getPostData().isBelled());
+                updateView();
             }
 
             @Override
@@ -131,9 +144,13 @@ public class PostView extends RelativeLayout {
         HugTask task = new HugTask() {
             @Override
             public void onSuccess(Integer result) {
-                Button btn_hug = (Button) findViewById(R.id.btn_hug);
-                String text = btn_hug.getText().toString().equals("Hug") ? "Hugged" : "Hug";
-                btn_hug.setText(text);
+                if (getPostData().isHugged()) {
+                    getPostData().setHug(getPostData().getHug() - 1);
+                } else {
+                    getPostData().setHug(getPostData().getHug() + 1);
+                }
+                getPostData().setHugged(!getPostData().isHugged());
+                updateView();
             }
 
             @Override

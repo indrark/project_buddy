@@ -2,9 +2,9 @@ package com.njit.buddy.app;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -46,7 +46,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BuddyActivity.this);
+        SharedPreferences preferences = getSharedPreferences("buddy", Context.MODE_PRIVATE);
         setTabSelection(preferences.getInt(getResources().getString(R.string.key_tab), TAB_NEWS));
     }
 
@@ -93,7 +93,7 @@ public class BuddyActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void updateCurrentTab(int tab) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(BuddyActivity.this);
+        SharedPreferences preferences = getSharedPreferences("buddy", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(getResources().getString(R.string.key_tab), tab);
         editor.apply();

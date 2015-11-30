@@ -48,8 +48,8 @@
                 android:label="@string/title_activity_setting">
         </activity>
         <activity
-                android:name=".ProfileEditActivity"
-                android:label="@string/title_activity_profile_edit">
+                android:name=".HugActivity"
+                android:label="@string/title_activity_hug">
         </activity>
     </application>
 

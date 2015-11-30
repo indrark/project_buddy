@@ -1,12 +1,14 @@
 package com.njit.buddy.app;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import com.njit.buddy.app.network.Connector;
 
 /**
@@ -26,12 +28,14 @@ public class AccountActivity extends AppCompatActivity {
     private void initComponents() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            getSupportActionBar().setCustomView(R.layout.abs_account);
+            getSupportActionBar().setCustomView(R.layout.abs_back);
 
-            getSupportActionBar().getCustomView().
-                    findViewById(R.id.btn_account_back).setOnClickListener(btn_back_click_listener);
-            findViewById(R.id.btn_logout).setOnClickListener(btn_logout_click_listener);
+            getSupportActionBar().getCustomView().findViewById(R.id.btn_back).setOnClickListener(btn_back_click_listener);
+            TextView tv_title = (TextView) getSupportActionBar().getCustomView().findViewById(R.id.tv_title);
+            tv_title.setText(getResources().getString(R.string.title_activity_account));
         }
+        Button btn_logout = (Button) findViewById(R.id.btn_logout);
+        btn_logout.setOnClickListener(btn_logout_click_listener);
     }
 
     private void gotoBuddyActivity() {
@@ -42,9 +46,11 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(AccountActivity.this);
+        SharedPreferences preferences = getSharedPreferences("buddy", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.remove("token");
+        editor.remove(getResources().getString(R.string.key_token));
+        editor.remove(getResources().getString(R.string.key_tab));
+        editor.remove(getResources().getString(R.string.key_uid));
         editor.apply();
         Connector.setAuthenticationToken(null);
         Intent intent = new Intent(getBaseContext(), LoginActivity.class);

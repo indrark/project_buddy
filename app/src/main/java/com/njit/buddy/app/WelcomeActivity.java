@@ -1,11 +1,11 @@
 package com.njit.buddy.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Window;
 import android.view.WindowManager;
 import com.njit.buddy.app.network.Connector;
@@ -44,7 +44,7 @@ public class WelcomeActivity extends Activity {
     }
 
     private String getToken() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences preferences = getSharedPreferences("buddy", Context.MODE_PRIVATE);
         return preferences.getString(getResources().getString(R.string.key_token), null);
     }
 

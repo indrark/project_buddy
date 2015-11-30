@@ -4,17 +4,19 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import com.njit.buddy.app.entity.Profile;
 import com.njit.buddy.app.network.Connector;
 import com.njit.buddy.app.network.task.LoginTask;
+import com.njit.buddy.app.network.task.ProfileViewTask;
 import com.njit.buddy.app.network.task.RegisterTask;
 import com.njit.buddy.app.util.EmailValidator;
 import com.njit.buddy.app.util.PasswordValidator;
@@ -145,12 +147,31 @@ public class RegisterActivity extends Activity {
 
     public void onLoginSuccess(String token) {
         Connector.setAuthenticationToken(token);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences preferences = getSharedPreferences("buddy", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(getResources().getString(R.string.key_token), token);
         editor.apply();
+        ProfileViewTask task = new ProfileViewTask() {
+            @Override
+            public void onSuccess(Profile result) {
+                onProfileSuccess(result);
+            }
+
+            @Override
+            public void onFail(int error_code) {
+                onProfileSuccess(new Profile(0));
+            }
+        };
+        task.execute(0);
+    }
+
+    public void onProfileSuccess(Profile profile) {
+        SharedPreferences preferences = getSharedPreferences("buddy", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(getResources().getString(R.string.key_uid), profile.getUID());
+        editor.remove(getResources().getString(R.string.key_tab));
+        editor.apply();
         gotoBuddyPage();
-        showProgress(false);
     }
 
     public void onLoginFail(int error_code) {

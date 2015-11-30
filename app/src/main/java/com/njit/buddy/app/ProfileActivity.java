@@ -1,16 +1,15 @@
 package com.njit.buddy.app;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 /**
  * @author toyknight 8/16/2015.
@@ -33,11 +32,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void initComponents() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            getSupportActionBar().setCustomView(R.layout.abs_profile);
+            getSupportActionBar().setCustomView(R.layout.abs_back);
 
-            getSupportActionBar().getCustomView().findViewById(R.id.btn_profile_back).setOnClickListener(btn_back_click_listener);
-            getSupportActionBar().getCustomView().findViewById(R.id.btn_profile_edit).setOnClickListener(btn_edit_click_listener);
-            getSupportActionBar().getCustomView().findViewById(R.id.btn_profile_edit).setVisibility(View.INVISIBLE);
+            getSupportActionBar().getCustomView().findViewById(R.id.btn_back).setOnClickListener(btn_back_click_listener);
+            TextView tv_title = (TextView) getSupportActionBar().getCustomView().findViewById(R.id.tv_title);
+            tv_title.setText(getResources().getString(R.string.title_activity_profile));
         }
 
         View btn_birthday = findViewById(R.id.btn_birthday);
@@ -111,17 +110,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     break;
             }
             return false;
-        }
-
-    };
-
-    private View.OnClickListener btn_edit_click_listener = new View.OnClickListener() {
-
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(getBaseContext(), ProfileEditActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         }
 
     };
