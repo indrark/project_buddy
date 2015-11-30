@@ -37,7 +37,7 @@
     <string name="label_flag">Flag</string>
     <string name="label_flagged">Flagged</string>
 
-    <string name="msg_category">Pick a category</string>
+    <string name="msg_category">I want to...</string>
     <string name="msg_say_something">Say something…</string>
 
     <string name="tab_news">News Feed</string>
