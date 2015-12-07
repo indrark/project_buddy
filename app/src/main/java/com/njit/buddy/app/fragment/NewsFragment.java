@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
  */
 public class NewsFragment extends Fragment {
 
+    private SwipeRefreshLayout swipe_container;
+
     private AlertDialog category_list;
     private AlertDialog post_dialog;
     private EditText content_input;
@@ -30,9 +33,27 @@ public class NewsFragment extends Fragment {
     private int selected_category;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         createDialogs();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_news, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        swipe_container = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_container);
+        swipe_container.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        tryUpdateNewsList();
+                    }
+                }
+        );
     }
 
     private void createDialogs() {
@@ -98,11 +119,13 @@ public class NewsFragment extends Fragment {
         PostListTask task = new PostListTask() {
             @Override
             public void onSuccess(ArrayList<Post> post_list) {
+                swipe_container.setRefreshing(false);
                 updateNewsList(post_list);
             }
 
             @Override
             public void onFail(int error_code) {
+                swipe_container.setRefreshing(false);
                 Log.error("News", error_code);
             }
         };
