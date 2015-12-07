@@ -51,6 +51,10 @@
                 android:name=".HugActivity"
                 android:label="@string/title_activity_hug">
         </activity>
+        <activity
+                android:name=".CommentActivity"
+                android:label="@string/title_activity_comment">
+        </activity>
     </application>
 
 </manifest>

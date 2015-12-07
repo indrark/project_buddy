@@ -50,26 +50,19 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="center" android:gravity="center_vertical">
 
-        <TextView
-                android:layout_width="52dp"
-                android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/label_flag"
-                android:id="@+id/btn_flag"
-                android:layout_marginRight="@dimen/widget_margin"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_vertical|center_horizontal"/>
-
-        <TextView
+        <ImageView
                 android:layout_width="48dp"
-                android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/label_bell"
-                android:id="@+id/btn_bell"
-                android:gravity="center_vertical|center_horizontal"/>
-
+                android:layout_height="48dp"
+                android:id="@+id/btn_flag"
+                android:src="@drawable/ic_flag_unselected"
+                android:contentDescription="@string/label_flag" android:padding="12dp"/>
+        <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:id="@+id/btn_bell" android:src="@drawable/ic_bell_unselected"
+                android:contentDescription="@string/label_bell" android:padding="12dp"/>
         <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -87,6 +80,28 @@
                 android:text="@string/label_undefined"
                 android:id="@+id/btn_hugged"/>
 
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_gravity="right" android:id="@+id/btn_comment"
+            android:padding="@dimen/icon_margin">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/label_comments"
+                android:id="@+id/label_comment"/>
+        <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/label_undefined"
+                android:id="@+id/tv_comment_count"/>
     </LinearLayout>
 
 </LinearLayout>

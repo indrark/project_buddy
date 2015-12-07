@@ -169,7 +169,7 @@ public class LoginActivity extends Activity {
     public void onProfileSuccess(Profile profile) {
         SharedPreferences preferences = getSharedPreferences("buddy", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt(getResources().getString(R.string.key_uid), profile.getUID());
+        editor.putString(getResources().getString(R.string.key_username), profile.getUsername());
         editor.putString(getResources().getString(R.string.key_username), profile.getUsername());
         editor.apply();
         gotoBuddyPage();

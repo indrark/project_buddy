@@ -5,19 +5,9 @@ package com.njit.buddy.app.entity;
  */
 public class Profile {
 
-    private final int uid;
+    private final String username;
 
-    private String username = "";
-
-    public Profile(int uid) {
-        this.uid = uid;
-    }
-
-    public int getUID() {
-        return uid;
-    }
-
-    public void setUsername(String username) {
+    public Profile(String username) {
         this.username = username;
     }
 

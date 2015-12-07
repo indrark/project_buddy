@@ -10,6 +10,7 @@
     <string name="title_activity_profile">Profile</string>
     <string name="title_activity_setting">Setting</string>
     <string name="title_activity_hug">Hug</string>
+    <string name="title_activity_comment">Comments</string>
 
     <string name="label_add_post">Add Post</string>
     <string name="label_account">Account</string>
@@ -36,9 +37,9 @@
     <string name="label_belled">Belled</string>
     <string name="label_flag">Flag</string>
     <string name="label_flagged">Flagged</string>
+    <string name="label_comments">Comments</string>
 
-
-    <string name="msg_category">I want to...</string>
+    <string name="msg_category">I want to…</string>
     <string name="msg_say_something">Say something…</string>
 
     <string name="tab_news">News Feed</string>

@@ -2,10 +2,12 @@ package com.njit.buddy.app.widget;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
+import com.njit.buddy.app.CommentActivity;
 import com.njit.buddy.app.HugActivity;
 import com.njit.buddy.app.R;
 import com.njit.buddy.app.entity.Post;
@@ -30,14 +32,14 @@ public class PostView extends RelativeLayout {
         super(context);
         this.post_data = post_data;
         View.inflate(getContext(), R.layout.view_post, this);
-        TextView btn_flag = (TextView) findViewById(R.id.btn_flag);
+        ImageView btn_flag = (ImageView) findViewById(R.id.btn_flag);
         btn_flag.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 tryFlag();
             }
         });
-        TextView btn_bell = (TextView) findViewById(R.id.btn_bell);
+        ImageView btn_bell = (ImageView) findViewById(R.id.btn_bell);
         btn_bell.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,11 +60,38 @@ public class PostView extends RelativeLayout {
                 gotoHugActivity();
             }
         });
+        View btn_comment = findViewById(R.id.btn_comment);
+        btn_comment.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        v.setBackgroundColor(Color.LTGRAY);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_MOVE:
+                        v.setBackgroundColor(Color.WHITE);
+                        break;
+                }
+                return false;
+            }
+        });
+        btn_comment.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoCommentActivity();
+            }
+        });
         updateView();
     }
 
     public Post getPostData() {
         return post_data;
+    }
+
+    private String getLocalUsername() {
+        SharedPreferences preferences = getContext().getSharedPreferences("buddy", Context.MODE_PRIVATE);
+        return preferences.getString(getResources().getString(R.string.key_username), "");
     }
 
     public void setBellVisible(boolean visible) {
@@ -76,7 +105,8 @@ public class PostView extends RelativeLayout {
 
     public void updateView() {
         if (getPostData() != null) {
-            String username = getPostData().getUsername();
+            String local_username = getLocalUsername();
+            String post_username = getPostData().getUsername();
             String content = getPostData().getContent();
             String date = new DateParser().toString(getPostData().getTimestamp());
             int hug = getPostData().getHug();
@@ -84,27 +114,51 @@ public class PostView extends RelativeLayout {
             boolean belled = getPostData().isBelled();
             boolean hugged = getPostData().isHugged();
 
-            ((TextView) findViewById(R.id.tv_username)).setText(username);
+            ((TextView) findViewById(R.id.tv_username)).setText(post_username);
             ((TextView) findViewById(R.id.tv_date)).setText(date);
             ((TextView) findViewById(R.id.tv_content)).setText(content);
             //flag button
-            TextView btn_flag = (TextView) findViewById(R.id.btn_flag);
-            btn_flag.setText(flagged ? "Flagged" : "Flag");
+            ImageView btn_flag = (ImageView) findViewById(R.id.btn_flag);
+            btn_flag.setImageDrawable(flagged ?
+                    getResources().getDrawable(R.drawable.ic_flag_selected) :
+                    getResources().getDrawable(R.drawable.ic_flag_unselected));
             //bell button
-            TextView btn_bell = (TextView) findViewById(R.id.btn_bell);
-            btn_bell.setText(belled ? "Belled" : "Bell");
+            ImageView btn_bell = (ImageView) findViewById(R.id.btn_bell);
+            btn_bell.setImageDrawable(belled ?
+                    getResources().getDrawable(R.drawable.ic_bell_selected) :
+                    getResources().getDrawable(R.drawable.ic_bell_unselected));
             //hug button
             Button btn_hug = (Button) findViewById(R.id.btn_hug);
-            btn_hug.setText(hugged ? "Hugged" : "Hug");
+            if (local_username.equals(post_username)) {
+                btn_hug.setText("Hug");
+                btn_hug.setEnabled(false);
+            } else {
+                btn_hug.setText(hugged ? "Hugged" : "Hug");
+            }
             //hugged button
             Button btn_hugged = (Button) findViewById(R.id.btn_hugged);
-            btn_hugged.setText(Integer.toString(hug));
+            if (local_username.equals(post_username)) {
+                btn_hugged.setText(Integer.toString(hug));
+            } else {
+                btn_hugged.setText("-");
+            }
+            //for test
+            ((TextView) findViewById(R.id.tv_comment_count)).setText("[0]");
         }
     }
 
     public void gotoHugActivity() {
-        Intent intent = new Intent(getContext(), HugActivity.class);
-        intent.putExtra("pid", getPostData().getPID());
+        String local_username = getLocalUsername();
+        String post_username = getPostData().getUsername();
+        if (local_username.equals(post_username)) {
+            Intent intent = new Intent(getContext(), HugActivity.class);
+            intent.putExtra("pid", getPostData().getPID());
+            getContext().startActivity(intent);
+        }
+    }
+
+    public void gotoCommentActivity() {
+        Intent intent = new Intent(getContext(), CommentActivity.class);
         getContext().startActivity(intent);
     }
 

@@ -24,7 +24,6 @@ public abstract class ProfileViewTask extends AsyncTask<Integer, Void, JSONObjec
             request_body.put("uid", uid);
 
             String result = Connector.executePost(Connector.SERVER_ADDRESS + "/profile/view", request_body.toString());
-            System.out.println(result);
             return new JSONObject(result);
         } catch (JSONException ex) {
             Log.d("JSON", ex.toString());
@@ -41,8 +40,7 @@ public abstract class ProfileViewTask extends AsyncTask<Integer, Void, JSONObjec
             onFail(ResponseValue.BUDDY_BAD_REQUEST);
         } else {
             try {
-                Profile profile = new Profile(result.getInt("uid"));
-//                profile.setUsername(result.getString("username"));
+                Profile profile = new Profile(result.getString("username"));
                 onSuccess(profile);
             } catch (JSONException ex) {
                 Log.d("Error", ex.toString());
